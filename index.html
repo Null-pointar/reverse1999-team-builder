@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse: 1999 Team Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <button id="menu-button" class="menu-button">☰</button>
+        <h1>Reverse: 1999 Team Builder</h1>
+    </header>
+
+    <div id="side-panel-overlay" class="side-panel-overlay hidden">
+        <div id="side-panel" class="side-panel">
+            <h2>Saved Teams</h2>
+            <button id="close-panel-button" class="close-panel-button">×</button>
+
+            <div class="panel-section">
+                <h3>Save Current Team</h3>
+                <form id="save-team-form">
+                    <input type="text" id="team-name-input" placeholder="Team Name (Required)" required>
+                    <textarea id="team-desc-input" placeholder="Description..."></textarea>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+
+            <div class="panel-section">
+                <h3>Team List</h3>
+                <ul id="saved-teams-list">
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="team-section">
+        <div id="team-slots" class="team-slots">
+            <div class="team-slot" data-slot-index="0">Slot 1</div>
+            <div class="team-slot" data-slot-index="1">Slot 2</div>
+            <div class="team-slot" data-slot-index="2">Slot 3</div>
+            <div class="team-slot" data-slot-index="3">Slot 4</div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <section class="filter-section">
+            <input type="text" id="search-bar" placeholder="Search character...">
+
+            <div class="filter-row">
+                <div class="filter-group">
+                    <p class="filter-label">Attribute</p>
+                    <div id="attribute-filters" class="attribute-filters"></div>
+                </div>
+                <div class="filter-group-separator"></div>
+                <div class="filter-group">
+                    <p class="filter-label">Damage Type</p>
+                    <div id="damage-type-filters" class="damage-type-filters"></div>
+                </div>
+            </div>
+            <p class="filter-label">Specialities</p>
+            <div id="specialty-filters" class="specialty-filters"></div>
+
+            <p class="filter-label">Tags</p>
+            <div id="tag-filters" class="tag-filters"></div>
+        </section>
+
+        <div id="character-list" class="character-list-area"></div>
+    </main>
+    
+    <footer class="footer">
+        <div class="language-switcher">
+            
+            <button class="lang-button" data-lang="en">English</button>
+            <button class="lang-button" data-lang="zh">中文</button>
+            <button class="lang-button active" data-lang="ja">日本語</button>
+        </div>
+        <div class="disclaimer-content">
+            
+            <div class="disclaimer-text lang-en hidden">
+                <p><strong>Disclaimer</strong></p>
+                <p>This website is an unofficial fan-made site for the game "Reverse: 1999".<br>
+                All copyrights, trademarks, and other intellectual property rights for the game content and images used on this site belong to their provider, Guangzhou Deep-blue Interactive Network Technology Co., Ltd.<br>
+                This site is created as a fan activity and is not for commercial purposes.</p>
+            </div>
+            <div class="disclaimer-text lang-zh hidden">
+                <p><strong>免责声明</strong></p>
+                <p>本网站是游戏《重返未来：1999》的非官方粉丝网站。<br>
+                网站内所使用的游戏图像、内容的著作权、商标权及其他所有知识产权，均归属于其内容提供方广州深蓝互动网络科技有限公司。<br>
+                本网站作为粉丝活动的一部分而创建，不用于任何商业目的。</p>
+            </div>
+            <div class="disclaimer-text lang-ja">
+                <p><strong>免責事項</strong></p>
+                <p>本サイトは、ゲーム「リバース1999」の非公式ファンサイトです。<br>
+                サイト内で使用しているゲーム画像の著作権、商標権、その他全ての知的財産権は、当該コンテンツの提供元である Guangzhou Deep-blue Interactive Network Technology Co., Ltd. に帰属します。<br>
+                当サイトはファン活動の一環として作成したものであり、営利目的ではありません。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

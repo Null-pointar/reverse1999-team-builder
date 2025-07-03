@@ -1,0 +1,1072 @@
+[
+  {
+    "id": 1,
+    "name": "Lucy",
+    "rarity": 6,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Extra Action", "Reaper"],
+    "tags": [ "Dynamo", "EA" ],
+    "version": null
+  },
+  {
+    "id": 2,
+    "name": "Nautika",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Reality",
+    "specialties": ["Bloodtithe", "DPS", "Strain"],
+    "tags": [ "HP Loss", "EA" ],
+    "version": "2.8"
+  },
+  {
+    "id": 3,
+    "name": "Recoleta",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Burst DMG"],
+    "tags": [ "Ult" ],
+    "version": null
+  },
+  {
+    "id": 4,
+    "name": "Melania",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["Burst DMG", "DPS"],
+    "tags": [ "Ult", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 5,
+    "name": "Semmelweis",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Support", "DPS", "Blood Burn"],
+    "tags": [ "HP Loss", "Array" ],
+    "version": null
+  },
+  {
+    "id": 6,
+    "name": "Ulrich",
+    "rarity": 6,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["Support", "Extra Action"],
+    "tags": [ "Dynamo", "EA" ],
+    "version": "2.8"
+  },
+  {
+    "id": 7,
+    "name": "Flutterpage",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Support", "Extra Action"],
+    "tags": [ "EA", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 8,
+    "name": "Kakania",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Support", "DEF", "Burst DMG"],
+    "tags": [ "AP+", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 9,
+    "name": "Fatutu",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Heal", "Dispeller", "Extra Action"],
+    "tags": [ "EA", "Cleanse" ],
+    "version": null
+  },
+  {
+    "id": 10,
+    "name": "Kiperina",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Shield", "Support", "Dispeller"],
+    "tags": [ "Impromptu", "EA" ],
+    "version": "2.7"
+  },
+  {
+    "id": 11,
+    "name": "Barcarola",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Support", "Inspiration"],
+    "tags": [ "Impromptu", "AP-" ],
+    "version": null
+  },
+  {
+    "id": 12,
+    "name": "Jiu Niangzi",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Burst DMG", "DPS", "Follow-up Attack"],
+    "tags": [ "EA", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 13,
+    "name": "Willow",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Poison", "Burst DMG"],
+    "tags": [ "Poison", "Tuesday" ],
+    "version": null
+  },
+  {
+    "id": 14,
+    "name": "Windsong",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Burst DMG", "Follow-up Attack"],
+    "tags": [ "EA" ],
+    "version": null
+  },
+  {
+    "id": 15,
+    "name": "Anjo Nala",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["Burst DMG", "Control", "DPS"],
+    "tags": [ "EA", "Control" ],
+    "version": null
+  },
+  {
+    "id": 16,
+    "name": "Hissabeth",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Control"],
+    "tags": [ "Ult", "AP+" ],
+    "version": "2.7"
+  },
+  {
+    "id": 17,
+    "name": "Liang Yue",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Extra Action", "Immunity"],
+    "tags": [ "Buff", "AP-" ],
+    "version": null
+  },
+  {
+    "id": 18,
+    "name": "Moldir",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Support", "Riposte"],
+    "tags": [ "Ult", "Buff" ],
+    "version": "2.8"
+  },
+  {
+    "id": 19,
+    "name": "Sentinel",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Bloodtithe", "DPS", "Support"],
+    "tags": [],
+    "version": "3.0"
+  },
+  {
+    "id": 20,
+    "name": "Tuesday",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Poison", "Debuff", "Support"],
+    "tags": [ "Poison", "Array" ],
+    "version": null
+  },
+  {
+    "id": 21,
+    "name": "Voyager",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "Control", "DPS"],
+    "tags": [ "Impromptu", "Control" ],
+    "version": null
+  },
+  {
+    "id": 22,
+    "name": "Aleph",
+    "rarity": 6,
+    "attribute": "Intellect",
+    "damageType": "Mental",
+    "specialties": ["Inspiration", "Support", "Burst DMG"],
+    "tags": [ "Impromptu", "Buff" ],
+    "version": "2.6"
+  },
+  {
+    "id": 23,
+    "name": "Argus",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Support", "Debuff"],
+    "tags": [ "Debuff", "Dispel" ],
+    "version": null
+  },
+  {
+    "id": 24,
+    "name": "Lopera",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Burn", "Extra Action", "Support"],
+    "tags": [ "Bullet", "Array" ],
+    "version": null
+  },
+  {
+    "id": 25,
+    "name": "Mercuria",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Support", "DPS", "Rank Up"],
+    "tags": [ "Buff", "Upgrade" ],
+    "version": null
+  },
+  {
+    "id": 26,
+    "name": "Pickles",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Support", "Dispeller"],
+    "tags": [ "Mineral", "EA", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 27,
+    "name": "Medicine Pocket",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["Control", "Debuff", "Heal"],
+    "tags": [ "HP Loss", "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 28,
+    "name": "Ms. NewBabel",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": [],
+    "tags": [ "Buff", "EA" ],
+    "version": null
+  },
+  {
+    "id": 29,
+    "name": "Sotheby",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Poison", "Heal"],
+    "tags": [ "Poison" ],
+    "version": null
+  },
+  {
+    "id": 30,
+    "name": "37",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Support", "Follow-up Attack"],
+    "tags": [ "EA", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 32,
+    "name": "Isolde",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Reality",
+    "specialties": ["Burn", "Support", "DPS"],
+    "tags": [ "Burn", "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 33,
+    "name": "J",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Shield", "Riposte"],
+    "tags": [ "Burn", "EA" ],
+    "version": null
+  },
+  {
+    "id": 34,
+    "name": "Jessica",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["Poison", "DPS"],
+    "tags": [ "Poison", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 35,
+    "name": "Regulus",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Support"],
+    "tags": [ "Impromptu", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 36,
+    "name": "Eternity",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Nasty Wound", "DPS"],
+    "tags": [ "HP Loss", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 38,
+    "name": "Ezra Theodore",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Shield", "Support", "Debuff"],
+    "tags": [ "Dynamo", "HP Loss" ],
+    "version": null
+  },
+  {
+    "id": 39,
+    "name": "Vila",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Purify", "Support", "Heal"],
+    "tags": [ "Buff", "Cleanse" ],
+    "version": null
+  },
+  {
+    "id": 40,
+    "name": "Lilya",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["Burst DMG", "DPS"],
+    "tags": [ "EA", "Ult" ],
+    "version": null
+  },
+  {
+    "id": 41,
+    "name": "Marcus",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Burst DMG", "DPS"],
+    "tags": [ "Upgrade" ],
+    "version": null
+  },
+  {
+    "id": 42,
+    "name": "Noire",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Burst DMG", "DPS", "Extra Action"],
+    "tags": [ "Debuff", "Ult" ],
+    "version": null
+  },
+  {
+    "id": 43,
+    "name": "Spathodea",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Burst DMG", "DPS", "Burn"],
+    "tags": [ "Burn", "Ult" ],
+    "version": null
+  },
+  {
+    "id": 45,
+    "name": "Druvis III",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Control", "Support"],
+    "tags": [ "Plant", "Control" ],
+    "version": null
+  },
+  {
+    "id": 47,
+    "name": "6",
+    "rarity": 6,
+    "attribute": "Intellect",
+    "damageType": "Mental",
+    "specialties": ["Purify", "Debuff", "Support"],
+    "tags": [ "Buff", "Cleanse" ],
+    "version": null
+  },
+  {
+    "id": 48,
+    "name": "An-an Lee",
+    "rarity": 6,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["Control", "Support", "DPS"],
+    "tags": [ "Upgrade", "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 51,
+    "name": "Tooth Fairy",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Heal", "Debuff", "Purify"],
+    "tags": [ "Debuff", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 53,
+    "name": "A Knight",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Reality",
+    "specialties": ["DPS"],
+    "tags": [ "Moxie", "Ult" ],
+    "version": null
+  },
+  {
+    "id": 54,
+    "name": "Centurion",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Burst DMG", "DPS"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 56,
+    "name": "Kaalaa Baunaa",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Burst DMG", "Follow-up Attack"],
+    "tags": [ "Ult", "Incan" ],
+    "version": null
+  },
+  {
+    "id": 61,
+    "name": "Getian",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Support", "DPS", "Debuff"],
+    "tags": [ "Beast", "Array" ],
+    "version": null
+  },
+  {
+    "id": 62,
+    "name": "Shamane",
+    "rarity": 6,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Debuff", "DPS", "Burst DMG"],
+    "tags": [ "Ult", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 31,
+    "name": "Buddy Fairchild",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Burst DMG"],
+    "tags": [ "Ult" ],
+    "version": "2.8"
+  },
+  {
+    "id": 37,
+    "name": "Name Day",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Support", "DPS"],
+    "tags": [ "Ult", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 44,
+    "name": "Bkornblume",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["Debuff", "Burst DMG", "Control"],
+    "tags": [ "Debuff", "Control" ],
+    "version": null
+  },
+  {
+    "id": 46,
+    "name": "Matilda",
+    "rarity": 5,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "DPS"],
+    "tags": [ "Impromptu" ],
+    "version": null
+  },
+  {
+    "id": 49,
+    "name": "Lorelei",
+    "rarity": 5,
+    "attribute": "Intellect",
+    "damageType": "Mental",
+    "specialties": ["Support", "DPS"],
+    "tags": [ "Buff" ],
+    "version": null
+  },
+  {
+    "id": 50,
+    "name": "Necrologist",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Support", "DPS"],
+    "tags": [ "Buff" ],
+    "version": null
+  },
+  {
+    "id": 52,
+    "name": "Yenisei",
+    "rarity": 5,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Support", "Heal", "Immunity"],
+    "tags": [ "Buff", "Upgrade" ],
+    "version": null
+  },
+  {
+    "id": 55,
+    "name": "Charlie",
+    "rarity": 5,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Dispeller", "DPS"],
+    "tags": [ "Incan", "Dispel" ],
+    "version": null
+  },
+  {
+    "id": 57,
+    "name": "Brimley",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Support", "Dispeller", "Extra Action"],
+    "tags": [ "EA" ],
+    "version": null
+  },
+  {
+    "id": 58,
+    "name": "Horropedia",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "DPS", "Dispeller"],
+    "tags": [ "Dispel" ],
+    "version": null
+  },
+  {
+    "id": 59,
+    "name": "Tennant",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Shield", "Debuff", "DPS"],
+    "tags": [ "Bullet", "EA" ],
+    "version": null
+  },
+  {
+    "id": 63,
+    "name": "Barbara",
+    "rarity": 5,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Support", "Shield", "Heal"],
+    "tags": [ "Upgrade" ],
+    "version": null
+  },
+  {
+    "id": 64,
+    "name": "Loggerhead",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Heal", "DEF", "Support"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 65,
+    "name": "Blonney",
+    "rarity": 5,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Burst DMG"],
+    "tags": [ "Incan" ],
+    "version": null
+  },
+  {
+    "id": 66,
+    "name": "Mr. Duncan",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": [],
+    "tags": [ "Bullet", "EA" ],
+    "version": null
+  },
+  {
+    "id": 67,
+    "name": "Sweetheart",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Control"],
+    "tags": [ "Debuff", "Incan" ],
+    "version": null
+  },
+  {
+    "id": 68,
+    "name": "Click",
+    "rarity": 5,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Debuff"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 69,
+    "name": "Kanjira",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "DPS", "Poison"],
+    "tags": [ "AP-", "Poison" ],
+    "version": null
+  },
+  {
+    "id": 71,
+    "name": "Avgust",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Heal", "Dispeller", "DPS"],
+    "tags": [ "Buff" ],
+    "version": null
+  },
+  {
+    "id": 72,
+    "name": "Desert Flannel",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Support", "DPS"],
+    "tags": [ "Beast", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 73,
+    "name": "Sonetto",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Control", "Support"],
+    "tags": [ "Buff", "Control" ],
+    "version": null
+  },
+  {
+    "id": 74,
+    "name": "X",
+    "rarity": 5,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["Dispeller", "DPS", "Control"],
+    "tags": [ "Control" ],
+    "version": null
+  },
+  {
+    "id": 75,
+    "name": "Balloon Party",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DEF", "Heal"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 76,
+    "name": "Dikke",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Heal"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 82,
+    "name": "Satsuki",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Control"],
+    "tags": [ "Control" ],
+    "version": null
+  },
+  {
+    "id": 88,
+    "name": "Baby Blue",
+    "rarity": 5,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "Control"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 91,
+    "name": "Diggers",
+    "rarity": 5,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Control", "Shield", "Debuff"],
+    "tags": [ "Debuff", "Control" ],
+    "version": null
+  },
+  {
+    "id": 102,
+    "name": "Ulu",
+    "rarity": 5,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["Support", "DPS", "Burn"],
+    "tags": [ "Burn", "Buff" ],
+    "version": null
+  },
+  {
+    "id": 60,
+    "name": "White Rum",
+    "rarity": 4,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Control", "Shift"],
+    "tags": [ "Control" ],
+    "version": null
+  },
+  {
+    "id": 78,
+    "name": "Eagle",
+    "rarity": 4,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["Burst DMG", "DPS"],
+    "tags": [ "Ult" ],
+    "version": null
+  },
+  {
+    "id": 79,
+    "name": "Mondlicht",
+    "rarity": 4,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DPS"],
+    "tags": [ "Incan", "Bullet" ],
+    "version": null
+  },
+  {
+    "id": 80,
+    "name": "Pavia",
+    "rarity": 4,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Self-healing"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 81,
+    "name": "Rabies",
+    "rarity": 4,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Poison"],
+    "tags": [ "Poison" ],
+    "version": null
+  },
+  {
+    "id": 83,
+    "name": "APPLe",
+    "rarity": 4,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["DPS", "Heal"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 84,
+    "name": "Bunny Bunny",
+    "rarity": 4,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Heal", "Nasty Wound"],
+    "tags": [ "Cleanse" ],
+    "version": null
+  },
+  {
+    "id": 93,
+    "name": "Erick",
+    "rarity": 4,
+    "attribute": "Plant",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Dispeller"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 95,
+    "name": "Mesmer Jr.",
+    "rarity": 4,
+    "attribute": "Intellect",
+    "damageType": "Mental",
+    "specialties": [],
+    "tags": [ "Debuff", "Control" ],
+    "version": null
+  },
+  {
+    "id": 97,
+    "name": "Nick Bottom",
+    "rarity": 4,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["Support"],
+    "tags": [ "Buff" ],
+    "version": null
+  },
+  {
+    "id": 98,
+    "name": "Oliver Fog",
+    "rarity": 4,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["DEF", "Support"],
+    "tags": [ "Buff" ],
+    "version": null
+  },
+  {
+    "id": 100,
+    "name": "TTT",
+    "rarity": 4,
+    "attribute": "Star",
+    "damageType": "Mental",
+    "specialties": ["DEF", "Dispeller"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 103,
+    "name": "Зима",
+    "rarity": 4,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Support", "Control"],
+    "tags": [ "Buff", "Control" ],
+    "version": null
+  },
+  {
+    "id": 104,
+    "name": "Cristallo",
+    "rarity": 4,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Nasty Wound", "Support"],
+    "tags": [ "Buff", "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 105,
+    "name": "Ms. Moissan",
+    "rarity": 4,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": [],
+    "tags": [ "Control" ],
+    "version": null
+  },
+  {
+    "id": 106,
+    "name": "Poltergeist",
+    "rarity": 4,
+    "attribute": "Spirit",
+    "damageType": "Reality",
+    "specialties": ["DEF", "Debuff"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 70,
+    "name": "Leilani",
+    "rarity": 3,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["Support", "DPS"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 77,
+    "name": "La Source",
+    "rarity": 3,
+    "attribute": "Plant",
+    "damageType": "Mental",
+    "specialties": ["Heal"],
+    "tags": [ "Heal" ],
+    "version": null
+  },
+  {
+    "id": 85,
+    "name": "ONiON",
+    "rarity": 3,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Debuff"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 86,
+    "name": "Pioneer",
+    "rarity": 3,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Support", "Shield", "Shift"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 87,
+    "name": "aliEn T",
+    "rarity": 3,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["DEF", "Control"],
+    "tags": [ "Control" ],
+    "version": null
+  },
+  {
+    "id": 89,
+    "name": "Bette",
+    "rarity": 3,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["Shield", "Support"],
+    "tags": [ "Buff", "Upgrade" ],
+    "version": null
+  },
+  {
+    "id": 90,
+    "name": "Darley Clatter",
+    "rarity": 3,
+    "attribute": "Beast",
+    "damageType": "Mental",
+    "specialties": ["Support"],
+    "tags": [ "Moxie" ],
+    "version": null
+  },
+  {
+    "id": 94,
+    "name": "John Titor",
+    "rarity": 3,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["Dispeller", "Purify"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 99,
+    "name": "Sputnik",
+    "rarity": 3,
+    "attribute": "Mineral",
+    "damageType": "Mental",
+    "specialties": ["DEF", "Control"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 101,
+    "name": "Twins Sleep",
+    "rarity": 3,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Debuff", "Control"],
+    "tags": [ "Debuff" ],
+    "version": null
+  },
+  {
+    "id": 107,
+    "name": "The Fool",
+    "rarity": 3,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["DEF"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 92,
+    "name": "Door",
+    "rarity": 2,
+    "attribute": "Intellect",
+    "damageType": "Reality",
+    "specialties": ["Support"],
+    "tags": [],
+    "version": null
+  },
+  {
+    "id": 96,
+    "name": "Ms. Radio",
+    "rarity": 2,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": [],
+    "tags": [ "Moxie", "Debuff" ],
+    "version": null
+  }
+]
