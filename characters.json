@@ -186,7 +186,7 @@
     "attribute": "Mineral",
     "damageType": "Reality",
     "specialties": ["Bloodtithe", "DPS", "Support"],
-    "tags": [],
+    "tags": [ "HP Loss", "Bullet"],
     "version": "3.0"
   },
   {
