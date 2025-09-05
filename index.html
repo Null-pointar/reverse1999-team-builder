@@ -25,14 +25,6 @@
             <div class="panel-content-wrapper">
                 <div id="panel-content-teams" class="panel-content active">
                     <div class="panel-section">
-                        <h3>Save Current Team</h3>
-                        <form id="save-team-form">
-                            <input type="text" id="team-name-input" placeholder="Team Name (Required)" required>
-                            <textarea id="team-desc-input" placeholder="Description..."></textarea>
-                            <button type="submit">Save</button>
-                        </form>
-                    </div>
-                    <div class="panel-section">
                         <h3>Team List</h3>
                         <ul id="saved-teams-list"></ul>
                     </div>
@@ -81,11 +73,13 @@
         <div class="team-layout-container">
             <div id="team-slots-container" class="team-slots-container"></div>
             
-            <div id="loaded-team-info" class="loaded-team-info">
-                <input type="text" id="loaded-team-title" class="team-title-input" placeholder="Enter team name...">
-                <textarea id="loaded-team-desc" placeholder="Notes about this team..."></textarea>
+            <form id="save-team-form" class="loaded-team-info">
+                <input type="text" id="loaded-team-title" class="team-title-input" placeholder="Team Name (Required)" required>
+                <textarea id="loaded-team-desc" placeholder="Note for the team..."></textarea>
                 <p id="save-status" class="save-status"></p>
-            </div>
+                <button type="submit">Save Current Team</button>
+            </form>
+            
         </div>
         <div class="team-display-wrapper">
             <div id="team-stats-container" class="team-stats-container hidden"></div>

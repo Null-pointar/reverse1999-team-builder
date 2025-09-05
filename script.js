@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidePanelOverlay = document.getElementById('side-panel-overlay');
     const closePanelButton = document.getElementById('close-panel-button');
     const saveTeamForm = document.getElementById('save-team-form');
-    const teamNameInput = document.getElementById('team-name-input');
-    const teamDescInput = document.getElementById('team-desc-input');
+    //const teamNameInput = document.getElementById('team-name-input');
+    //const teamDescInput = document.getElementById('team-desc-input');
     const savedTeamsList = document.getElementById('saved-teams-list');
     const langButtons = document.querySelectorAll('.lang-button');
     const disclaimerTexts = document.querySelectorAll('.disclaimer-text');
@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 現在のチームを保存
     saveTeamForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const name = teamNameInput.value.trim();
+        const name = loadedTeamTitle.value.trim();
         if (!name) { alert('Team Name is required.'); return; }
 
         const teamData = generateCurrentTeamData();
@@ -649,7 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTeam = {
             id: Date.now().toString(),
             name: name,
-            description: teamDescInput.value.trim(),
+            description: loadedTeamDesc.value.trim(),
             mode: teamData.mode,
             teams: teamData.teams
         };
@@ -658,8 +658,8 @@ document.addEventListener('DOMContentLoaded', () => {
         savedTeams.push(newTeam);
         saveTeamsToStorage(savedTeams);
 
-        teamNameInput.value = '';
-        teamDescInput.value = '';
+        loadedTeamTitle.value = '';
+        loadedTeamDesc.value = '';
         renderSavedTeams();
     });
 
