@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const langButtons = document.querySelectorAll('.lang-button');
     const disclaimerTexts = document.querySelectorAll('.disclaimer-text');
     const loadedTeamInfo = document.getElementById('loaded-team-info');
+    const loadedTeamTitle = document.getElementById('loaded-team-title'); 
     const loadedTeamDesc = document.getElementById('loaded-team-desc');
     const saveStatusElement = document.getElementById('save-status');
     const teamStatsContainer = document.getElementById('team-stats-container');
@@ -428,6 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // チーム名と説明をUIに反映
+        loadedTeamTitle.textContent = teamData.name || 'Team Memo';
         loadedTeamDesc.value = teamData.description || '';
     }
 
@@ -455,7 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const shareData = {
             m: teamData.mode,
-            t: teamData.teams
+            t: teamData.teams,
+            n: teamData.name, // チーム名を追加
+            d: teamData.description // 説明を追加
         };
         
         const jsonString = JSON.stringify(shareData);
@@ -511,7 +516,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const sharedData = JSON.parse(jsonString);
 
             if (sharedData.m && sharedData.t) {
-                loadTeamData(sharedData);
+                // 読み込んだデータを内部形式に変換
+                const teamDataForLoad = {
+                    mode: sharedData.m,
+                    teams: sharedData.t,
+                    name: sharedData.n || 'Loaded from URL',
+                    description: sharedData.d || ''
+                };
+                loadTeamData(teamDataForLoad);
                 alert('Team loaded from URL!');
                 // URLからハッシュを削除してリロードを防ぐ
                 history.pushState("", document.title, window.location.pathname + window.location.search);
@@ -527,17 +539,30 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // チームコードから読み込み
     function loadTeamFromCode() {
-        const code = teamCodeInput.value.trim();
+        var code = teamCodeInput.value.trim();
         if (!code) {
             alert('Please paste a team code.');
             return;
+        }
+        // URLがペーストされた場合でも、#以降のコード部分だけを抽出する
+        if (code.includes('#')) {
+            code = code.split('#').pop();
         }
         try {
             const jsonString = decodeURIComponent(atob(code));
             const teamData = JSON.parse(jsonString);
 
-            if (teamData.m && teamData.t) {
-                loadTeamData(teamData);
+            const sharedData = JSON.parse(jsonString); // 変数名を sharedData に統一
+
+            if (sharedData.m && sharedData.t) {
+                // 読み込んだデータを内部形式に変換
+                const teamDataForLoad = {
+                    mode: sharedData.m,
+                    teams: sharedData.t,
+                    name: sharedData.n || 'Loaded from Code',
+                    description: sharedData.d || ''
+                };
+                loadTeamData(teamDataForLoad);
                 currentlyLoadedTeamId = null; // 外部データなので保存済みIDは解除
                 alert('Team loaded successfully!');
                 closeSidePanel();
