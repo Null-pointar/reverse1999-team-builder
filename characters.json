@@ -1068,5 +1068,45 @@
     "specialties": [],
     "tags": [ "Moxie", "Debuff" ],
     "version": null
+  },
+  {
+    "id": 108,
+    "name": "Ezio Auditore",
+    "rarity": 6,
+    "attribute": "Star",
+    "damageType": "Reality",
+    "specialties": ["Riposte", "DPS"],
+    "tags": [ "EA", "Ult", "Poison" ],
+    "version": null
+  },
+  {
+    "id": 109,
+    "name": "Charon",
+    "rarity": 6,
+    "attribute": "Spirit",
+    "damageType": "Mental",
+    "specialties": ["Dynamo", "Support", "Extra Action"],
+    "tags": [ "Dynamo", "AP+" ],
+    "version": "3.0"
+  },
+  {
+    "id": 110,
+    "name": "Kassandra",
+    "rarity": 6,
+    "attribute": "Mineral",
+    "damageType": "Reality",
+    "specialties": ["DPS", "Support"],
+    "tags": [ "Ult", "FUA", "AP+" ],
+    "version": null
+  },
+  {
+    "id": 111,
+    "name": "Alexios",
+    "rarity": 5,
+    "attribute": "Beast",
+    "damageType": "Reality",
+    "specialties": ["DPS"],
+    "tags": [ "Ult", "Kassandra" ],
+    "version": null
   }
 ]
