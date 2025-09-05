@@ -443,7 +443,7 @@
     "id": 6014,
     "name": "Tooth Fairy",
     "rarity": 6,
-    "attribute": "Spirit",
+    "attribute": "Star",
     "damageType": "Mental",
     "specialties": ["Heal", "Debuff", "Purify"],
     "tags": [ "Debuff", "AP+" ],
