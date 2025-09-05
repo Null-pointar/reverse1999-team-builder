@@ -109,6 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'rarity-asc':
                     sortedCharacters.sort((a, b) => (a.rarity || 0) - (b.rarity || 0));
                     break;
+                default: // <<< この default ケースを追加
+                    // デフォルトはIDの降順（番号の逆順）でソート
+                    sortedCharacters.sort((a, b) => b.id - a.id);
+                    break;
             }
 
             displayCharacters(sortedCharacters);
