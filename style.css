@@ -353,12 +353,21 @@ body {
 }
 
 /* 属性ごとの色分け */
+/*
 .attr-beast { background-color: #c9823a; }
 .attr-plant { background-color: #64a23a; }
 .attr-star { background-color: #c9c23a; }
 .attr-mineral { background-color: #8c6eac; }
 .attr-spirit { background-color: #4b92b3; }
 .attr-intellect { background-color: #3a3a3a; }
+*/
+.attr-beast { background-color: #823838; }
+.attr-plant { background-color: #286637; }
+.attr-star { background-color: #5c87b4; }
+.attr-mineral { background-color: #aa824a; }
+.attr-spirit { background-color: #ae66b4; }
+.attr-intellect { background-color: #bdaa5d; }
+
 
 /* ダメージタイプごとの色分け */
 .type-reality { background-color: #e67e22; }
