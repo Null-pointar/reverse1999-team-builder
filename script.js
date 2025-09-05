@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // チーム名と説明をUIに反映
-        loadedTeamTitle.value  = teamData.name || 'Team Memo';
+        loadedTeamTitle.value  = teamData.name || '';
         loadedTeamDesc.value = teamData.description || '';
     }
 
