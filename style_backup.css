@@ -1,0 +1,637 @@
+/* 基本的なスタイル */
+body {
+    font-family: sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+}
+
+.header {
+    background-color: #1a2c4e;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+/* チーム編成エリア */
+.team-section {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.team-slots {
+    display: flex;
+    gap: 15px;
+}
+
+.team-slot {
+    width: 120px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #888;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.save-button {
+    padding: 12px 25px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+.save-button:hover {
+    background-color: #3b528f;
+}
+
+/* メインコンテンツ（フィルターと一覧） */
+.main-content {
+    padding: 20px;
+}
+
+/* フィルターエリア */
+.filter-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: block;
+    margin: 0 auto 20px auto;
+    font-size: 16px;
+}
+
+.tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tag-filter {
+    display: flex;
+    align-items: center;
+    background-color: #e2e8f0;
+    border-radius: 12px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tag-filter input {
+    display: none;
+}
+
+.tag-filter.checked {
+    background-color: #4a69bd;
+    color: white;
+}
+
+/* キャラクター一覧 */
+.character-list-area {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+}
+
+/* キャラクターカード */
+.character-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.character-card .rarity {
+    color: #f9ca24;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.character-card .name {
+    margin: 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.character-card .tags {
+    font-size: 12px;
+    color: #666;
+}
+
+/* ドラッグ＆ドロップ用スタイル */
+.drag-over {
+    background-color: #e0eaff;
+    border-style: solid;
+}
+
+.slot-filled {
+    border-style: solid;
+    border-color: #a7bcf5;
+    background-color: #f0f5ff;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    flex-direction: column; /* 中身を縦に並べる */
+    cursor: pointer;
+}
+
+.slot-filled .name {
+    font-weight: bold;
+}
+.slot-filled .rarity {
+    font-size: 12px;
+    color: #555;
+}
+
+/* キャラクターカード内の属性 */
+.character-card .attribute {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+/* チームスロット内の属性 */
+.slot-filled .attribute {
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+/* 属性ごとの色分け */
+.attr-beast { background-color: #c9823a; }
+.attr-plant { background-color: #64a23a; }
+.attr-star { background-color: #c9c23a; }
+.attr-mineral { background-color: #8c6eac; }
+.attr-spirit { background-color: #4b92b3; }
+.attr-intellect { background-color: #3a3a3a; }
+
+/* 属性フィルターのエリア */
+.attribute-filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.attribute-filter {
+    padding: 8px 15px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s;
+}
+.attribute-filter:hover {
+    transform: scale(1.05);
+}
+
+.attribute-filter.selected {
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* フッター */
+.footer {
+    background-color: #333;
+    color: #ccc;
+    padding: 20px;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.language-switcher {
+    margin-bottom: 15px;
+}
+
+.lang-button {
+    background-color: #555;
+    color: #fff;
+    border: 1px solid #777;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.lang-button:hover {
+    background-color: #777;
+}
+
+.lang-button.active {
+    background-color: #4a69bd;
+    border-color: #4a69bd;
+}
+
+.disclaimer-text p {
+    margin: 5px 0;
+}
+.disclaimer-text strong {
+    color: #fff;
+}
+
+/* 他の言語を隠すためのクラス */
+.hidden {
+    display: none;
+}
+
+/* ヘッダーのメニューボタン */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* 子要素の位置決めの基準とする */
+}
+.menu-button {
+    position: absolute;
+    left: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* サイドパネル */
+.side-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+.side-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 100%;
+    background-color: #f4f4f9;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1001;
+}
+
+.close-panel-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #555;
+}
+
+.panel-section {
+    margin-bottom: 30px;
+}
+.panel-section h3 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* 保存フォーム */
+#save-team-form input,
+#save-team-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#save-team-form textarea {
+    height: 80px;
+    resize: vertical;
+}
+#save-team-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 保存済みチームリスト */
+#saved-teams-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#saved-teams-list li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+#saved-teams-list .team-info strong {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+}
+#saved-teams-list .team-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 15px 0;
+    white-space: pre-wrap; /* 改行を反映 */
+}
+#saved-teams-list .team-actions button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#saved-teams-list .load-btn {
+    background-color: #27ae60;
+    color: white;
+    border-color: #27ae60;
+}
+#saved-teams-list .delete-btn {
+    background-color: #c0392b;
+    color: white;
+    border-color: #c0392b;
+}
+
+/* 以前のSaveボタンは不要になったので非表示に */
+.team-section .save-button {
+    display: none;
+}
+
+/* ダメージタイプ表示（カード内） */
+.damage-type {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 3px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.type-reality { background-color: #e67e22; } /* Reality: オレンジ系 */
+.type-mental { background-color: #9b59b6; } /* Mental: 紫系 */
+
+.character-card {
+    position: relative; /* 子要素のabsolute配置の基準とする */
+}
+
+/* ダメージタイプフィルターのボタン */
+.damage-type-filters {
+    display: flex;
+    gap: 10px;
+    justify-content: center; 
+}
+.damage-type-filter {
+    padding: 8px 15px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.damage-type-filter:hover {
+    transform: scale(1.05);
+}
+.damage-type-filter.selected {
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* 専門分野タグ（カード内） */
+.specialties {
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
+.specialty-tag {
+    background-color: #e0e0e0;
+    color: #555;
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* 専門分野フィルターのエリア */
+.specialty-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* タグフィルターの上側のマージンを調整 */
+.tag-filters {
+    margin-top: 20px;
+}
+
+/* フィルターセクションの見出しラベル */
+.filter-label {
+    font-size: 16px; /* 少し小さくしてバランス調整 */
+    font-weight: bold;
+    color: #444;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 属性フィルターのボタンを大きくする */
+.attribute-filter {
+    padding: 10px 18px; /* Paddingを増やしてボタンを大きく */
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s;
+}
+
+/* フィルターグループ（ラベルとボタンをまとめる） */
+.filter-group {
+    text-align: center;
+}
+
+/* style.cssの一番下に追加 */
+
+/* フィルターを横並びにするための行 */
+.filter-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 上端揃え */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* 横並び時のフィルターグループ */
+.filter-row .filter-group {
+    flex: 1; /* スペースを均等に分ける */
+    max-width: 30%; /* 最大幅を設定 */
+    margin-bottom: 0;
+}
+
+/* フィルター間の区切り線 */
+.filter-group-separator {
+    width: 1px;
+    background-color: #eee;
+    align-self: stretch; /* 親の高さに合わせる */
+}
+
+/* 横並び時のラベルは下線をなくす */
+.filter-row .filter-label {
+    border-bottom: none;
+}
+
+/* 専門分野フィルターのレイアウト調整 */
+.specialty-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* スマホ表示など、画面幅が狭い場合は縦並びに戻す */
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .filter-row .filter-group {
+        max-width: 100%;
+        width: 100%;
+    }
+    .filter-group-separator {
+        display: none; /* スマホでは区切り線を非表示 */
+    }
+    .filter-row .filter-label {
+        border-bottom: 1px solid #eee;
+    }
+}
+
+.team-slot.dragging {
+    opacity: 0.4;
+}
+
+/* フィルターグループ内で何かが選択されている時の「非選択」ボタンのスタイル */
+.damage-type-filters.filter-active .damage-type-filter,
+.attribute-filters.filter-active .attribute-filter {
+    opacity: 0.6;
+    transform: scale(0.95);
+    box-shadow: none; /* 通常時の影を消す */
+}
+
+/* フィルターグループ内で何かが選択されている時の「選択中」ボタンのスタイル */
+.damage-type-filters.filter-active .damage-type-filter.selected,
+.attribute-filters.filter-active .attribute-filter.selected {
+    opacity: 1;
+    transform: scale(1.05); /* 少し拡大して目立たせる */
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.7); /* 影を少し強くする */
+}
+
+/* フィルターを横並びにするための行 */
+.filter-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* 横並び時のフィルターグループ */
+.filter-row .filter-group {
+    flex: 1;
+    max-width: 45%;
+}
+
+/* フィルター間の区切り線 */
+.filter-group-separator {
+    width: 1px;
+    background-color: #eee;
+    align-self: stretch;
+}
+
+/* 横並び時のラベルは下線をなくす */
+.filter-row .filter-label {
+    border-bottom: none;
+}
+
+/* スマホ表示など、画面幅が狭い場合は縦並びに戻す */
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .filter-row .filter-group {
+        max-width: 100%;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .filter-group-separator {
+        display: none;
+    }
+}

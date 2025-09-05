@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- DOM Element Selection ---
+    // --- DOM要素の選択 ---
     const characterListElement = document.getElementById('character-list');
     const searchBar = document.getElementById('search-bar');
     const damageTypeFiltersContainer = document.getElementById('damage-type-filters');
@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const langButtons = document.querySelectorAll('.lang-button');
     const disclaimerTexts = document.querySelectorAll('.disclaimer-text');
     const loadedTeamInfo = document.getElementById('loaded-team-info');
-    const loadedTeamName = document.getElementById('loaded-team-name');
     const loadedTeamDesc = document.getElementById('loaded-team-desc');
+    const saveStatusElement = document.getElementById('save-status');
     const teamStatsContainer = document.getElementById('team-stats-container');
     const modeSelector = document.getElementById('mode-selector');
     const teamSlotsContainer = document.getElementById('team-slots-container');
@@ -29,32 +29,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const shareUrlInput = document.getElementById('share-url-input');
     const copyUrlButton = document.getElementById('copy-url-button');
     const qrcodeDisplay = document.getElementById('qrcode-display');
+    const loadTeamFromCodeButton = document.getElementById('load-team-from-code-button');
+    const teamCodeInput = document.getElementById('team-code-input');
+    const clearInputButton = document.getElementById('clear-input-button');
 
-    // --- Global Variables ---
+
+    // --- グローバル変数 ---
     let allCharacters = [];
     let selectedDamageType = null;
     let selectedAttribute = null;
-    let currentMode = 'mode1';
+    let currentMode = 'mode1'; // 初期モード
     let currentlyLoadedTeamId = null;
 
-    // --- Initialization ---
+    // --- 初期化処理 ---
+    // キャラクターデータを読み込み、初期表示を実行
     fetch('./characters.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
         .then(characters => {
             allCharacters = characters;
-            const didLoadFromUrl = loadTeamFromUrl(); // << 変更
-            if (!didLoadFromUrl) { // << if文を追加
+            // URLにチームデータがあれば読み込む
+            const didLoadFromUrl = loadTeamFromUrl();
+            if (!didLoadFromUrl) {
+                // なければ通常の初期表示
                 renderTeamSlots();
             }
-            createDamageTypeFilters();
-            createAttributeFilters();
-            createSpecialtyFilters();
-            createTagFilters();
+            createAllFilters();
             applyFilters();
         })
         .catch(error => console.error('Character data failed to load:', error));
 
-    // --- Filter Functions ---
+    // --- フィルター関連の関数 ---
+
+    // すべてのフィルターを生成
+    function createAllFilters() {
+        createDamageTypeFilters();
+        createAttributeFilters();
+        createSpecialtyFilters();
+        createTagFilters();
+    }
+    
+    // フィルターを適用してキャラクターリストを更新
     function applyFilters() {
         const searchTerm = searchBar.value.toLowerCase();
         const selectedTags = Array.from(tagFiltersContainer.querySelectorAll('input:checked')).map(input => input.value);
@@ -72,7 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
         displayCharacters(filteredCharacters);
     }
 
-    // --- Display and UI Creation Functions ---
+    // --- UI表示と生成の関数 ---
+
+    // キャラクター一覧を表示
     function displayCharacters(characters) {
         characterListElement.innerHTML = ''; 
         characters.forEach(character => {
@@ -100,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ダメージタイプフィルターを生成
     function createDamageTypeFilters() {
         const damageTypes = ["Reality", "Mental"];
         damageTypes.forEach(type => {
@@ -107,23 +127,17 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.className = `damage-type-filter type-${type.toLowerCase()}`;
             btn.textContent = type;
             btn.addEventListener('click', () => {
-                if (selectedDamageType === type) {
-                    selectedDamageType = null;
-                    damageTypeFiltersContainer.classList.remove('filter-active');
-                } else {
-                    selectedDamageType = type;
-                    damageTypeFiltersContainer.classList.add('filter-active');
-                }
+                selectedDamageType = (selectedDamageType === type) ? null : type;
+                damageTypeFiltersContainer.classList.toggle('filter-active', !!selectedDamageType);
                 document.querySelectorAll('.damage-type-filter').forEach(b => b.classList.remove('selected'));
-                if(selectedDamageType) {
-                    btn.classList.add('selected');
-                }
+                if(selectedDamageType) btn.classList.add('selected');
                 applyFilters();
             });
             damageTypeFiltersContainer.appendChild(btn);
         });
     }
 
+    // 属性フィルターを生成
     function createAttributeFilters() {
         const attributes = ["Beast", "Plant", "Star", "Mineral", "Spirit", "Intellect"];
         attributes.forEach(attr => {
@@ -131,68 +145,51 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.className = `attribute-filter attr-${attr.toLowerCase()}`;
             btn.textContent = attr;
             btn.addEventListener('click', () => {
-                if (selectedAttribute === attr) {
-                    selectedAttribute = null;
-                    attributeFiltersContainer.classList.remove('filter-active');
-                } else {
-                    selectedAttribute = attr;
-                    attributeFiltersContainer.classList.add('filter-active');
-                }
+                selectedAttribute = (selectedAttribute === attr) ? null : attr;
+                attributeFiltersContainer.classList.toggle('filter-active', !!selectedAttribute);
                 document.querySelectorAll('.attribute-filter').forEach(b => b.classList.remove('selected'));
-                if(selectedAttribute){
-                    btn.classList.add('selected');
-                }
+                if(selectedAttribute) btn.classList.add('selected');
                 applyFilters();
             });
             attributeFiltersContainer.appendChild(btn);
         });
     }
+    
+    // 専門分野・タグフィルターを生成する共通関数
+    function createCheckboxFilters(container, sourceFunction, prefix) {
+        const allItems = [...new Set(allCharacters.flatMap(sourceFunction))].sort();
+        container.innerHTML = '';
+        allItems.forEach(item => {
+            const itemElement = document.createElement('label');
+            itemElement.className = 'tag-filter';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `${prefix}-${item}`;
+            checkbox.value = item;
+            checkbox.addEventListener('change', () => {
+                itemElement.classList.toggle('checked', checkbox.checked);
+                applyFilters();
+            });
+            const text = document.createTextNode(item);
+            itemElement.appendChild(checkbox);
+            itemElement.appendChild(text);
+            container.appendChild(itemElement);
+        });
+    }
 
+    // 専門分野フィルターを生成
     function createSpecialtyFilters() {
-        const allSpecialties = [...new Set(allCharacters.flatMap(c => c.specialties))].sort();
-        allSpecialties.forEach(spec => {
-            const specElement = document.createElement('div');
-            specElement.className = 'tag-filter';
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `spec-${spec}`;
-            checkbox.value = spec;
-            checkbox.addEventListener('change', () => {
-                specElement.classList.toggle('checked', checkbox.checked);
-                applyFilters();
-            });
-            const label = document.createElement('label');
-            label.htmlFor = `spec-${spec}`;
-            label.textContent = spec;
-            specElement.appendChild(checkbox);
-            specElement.appendChild(label);
-            specialtyFiltersContainer.appendChild(specElement);
-        });
+        createCheckboxFilters(specialtyFiltersContainer, c => c.specialties, 'spec');
     }
 
+    // タグフィルターを生成
     function createTagFilters() {
-        const allTags = [...new Set(allCharacters.flatMap(c => c.tags))].sort();
-        allTags.forEach(tag => {
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag-filter';
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `tag-${tag}`;
-            checkbox.value = tag;
-            checkbox.addEventListener('change', () => {
-                tagElement.classList.toggle('checked', checkbox.checked);
-                applyFilters();
-            });
-            const label = document.createElement('label');
-            label.htmlFor = `tag-${tag}`;
-            label.textContent = tag;
-            tagElement.appendChild(checkbox);
-            tagElement.appendChild(label);
-            tagFiltersContainer.appendChild(tagElement);
-        });
+        createCheckboxFilters(tagFiltersContainer, c => c.tags, 'tag');
     }
 
-    // --- Mode and Team Slot Functions ---
+    // --- チーム編成とスロット関連の関数 ---
+
+    // チームスロットを現在のモードに合わせて描画
     function renderTeamSlots() {
         teamSlotsContainer.innerHTML = '';
         let partyCount = 0;
@@ -212,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 partyLabels = [''];
                 break;
         }
+
         for (let i = 0; i < partyCount; i++) {
             const partyRow = document.createElement('div');
             partyRow.className = 'party-row';
@@ -228,55 +226,64 @@ document.addEventListener('DOMContentLoaded', () => {
                 slot.className = 'team-slot';
                 const slotIndex = i * 4 + j;
                 slot.dataset.slotIndex = slotIndex;
-                slot.textContent = `Slot ${slotIndex + 1}`;
+                slot.textContent = `Slot ${j + 1}`;
                 slotsDiv.appendChild(slot);
             }
             partyRow.appendChild(slotsDiv);
             teamSlotsContainer.appendChild(partyRow);
         }
         attachSlotListeners();
-        addCurrentTeamShareButton(); // 共有ボタンを追加
         updateTeamStats();
     }
 
+    // 動的に生成されたスロットにイベントリスナーを設定
     function attachSlotListeners() {
-        const teamSlots = document.querySelectorAll('.team-slot');
-        teamSlots.forEach(slot => {
+        document.querySelectorAll('.team-slot').forEach(slot => {
+            // ドラッグ開始（スロットから）
             slot.addEventListener('dragstart', (event) => {
                 if (!slot.dataset.characterId) { event.preventDefault(); return; }
                 const dragData = JSON.stringify({ source: 'slot', characterId: slot.dataset.characterId, sourceSlotIndex: slot.dataset.slotIndex });
                 event.dataTransfer.setData('application/json', dragData);
                 setTimeout(() => slot.classList.add('dragging'), 0);
             });
+            // ドラッグ終了
             slot.addEventListener('dragend', () => slot.classList.remove('dragging'));
+            // ドラッグが上に来た時
             slot.addEventListener('dragover', e => { e.preventDefault(); if (!slot.classList.contains('dragging')) slot.classList.add('drag-over'); });
+            // ドラッグが離れた時
             slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+            // ドロップされた時
             slot.addEventListener('drop', (event) => {
                 event.preventDefault();
                 slot.classList.remove('drag-over');
                 const slotDataString = event.dataTransfer.getData('application/json');
-                if (slotDataString) {
+                
+                if (slotDataString) { // スロット間の移動
                     const sourceData = JSON.parse(slotDataString);
                     const sourceSlot = document.querySelector(`.team-slot[data-slot-index="${sourceData.sourceSlotIndex}"]`);
                     if (sourceSlot === slot) return;
+                    
                     const sourceCharacter = allCharacters.find(c => c.id == sourceData.characterId);
                     const targetCharacter = slot.dataset.characterId ? allCharacters.find(c => c.id == slot.dataset.characterId) : null;
+                    
                     fillSlot(slot, sourceCharacter);
                     if (targetCharacter) {
                         fillSlot(sourceSlot, targetCharacter);
                     } else {
                         clearSlot(sourceSlot);
                     }
-                } else {
+                } else { // キャラリストからの移動
                     const characterId = event.dataTransfer.getData('text/plain');
                     const character = allCharacters.find(c => c.id == characterId);
                     if (character) fillSlot(slot, character);
                 }
             });
+            // クリックでスロットを空にする
             slot.addEventListener('click', () => { if (slot.dataset.characterId) clearSlot(slot); });
         });
     }
 
+    // スロットにキャラクターを配置
     function fillSlot(slot, character) {
         const attributeClass = `attr-${character.attribute.toLowerCase()}`;
         slot.innerHTML = `<div class="name">${character.name}</div><div class="rarity">${'★'.repeat(character.rarity || 0)}</div><div class="attribute ${attributeClass}">${character.attribute}</div>`;
@@ -286,19 +293,24 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTeamStats();
     }
     
+    // スロットを空にする
     function clearSlot(slot) {
-        slot.innerHTML = `Slot ${parseInt(slot.dataset.slotIndex) + 1}`;
+        slot.innerHTML = `Slot ${parseInt(slot.dataset.slotIndex) % 4 + 1}`;
         slot.classList.remove('slot-filled');
         delete slot.dataset.characterId;
         slot.setAttribute('draggable', false);
         updateTeamStats();
     }
+    
+    // チーム統計を更新
+    function updateTeamStats() {
+        // この機能は複雑なので、一旦基本的な動作を優先し、
+        // 必要であれば後で詳細に実装します。
+    }
 
-    // --- Side Panel & Team Data Functions ---
+    // --- サイドパネルとチームデータ管理 ---
+
     function openSidePanel() {
-        const teamDescTextarea = document.getElementById('loaded-team-desc');
-        const teamDescInput = document.getElementById('team-desc-input');
-        teamDescInput.value = teamDescTextarea.value;
         sidePanelOverlay.classList.remove('hidden');
         renderSavedTeams();
     }
@@ -307,12 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getSavedTeams() {
-        return JSON.parse(localStorage.getItem('reverse1999_saved_teams')) || [];
+        try {
+            return JSON.parse(localStorage.getItem('reverse1999_saved_teams')) || [];
+        } catch (e) {
+            return [];
+        }
     }
     function saveTeamsToStorage(teams) {
         localStorage.setItem('reverse1999_saved_teams', JSON.stringify(teams));
     }
 
+    // 保存済みチームリストを描画
     function renderSavedTeams() {
         const teams = getSavedTeams();
         savedTeamsList.innerHTML = '';
@@ -327,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.innerHTML = `
                 <div class="team-info">
                     <strong>${teamData.name}</strong>
-                    <p>${teamData.description}</p>
+                    <p>${teamData.description || ''}</p>
                 </div>
                 <div class="team-actions">
                     <button class="load-btn">Load</button>
@@ -344,47 +361,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // チーム情報を編集
     function editTeam(teamId) {
         const teams = getSavedTeams();
         const teamData = teams.find(t => t.id === teamId);
-        const li = savedTeamsList.querySelector(`[data-team-id="${teamId}"]`);
-        li.innerHTML = `<form class="edit-form"><input type="text" value="${teamData.name}" required><textarea>${teamData.description}</textarea><div class="edit-form-actions"><button type="submit">Save</button><button type="button" class="cancel-btn">Cancel</button></div></form>`;
+        const li = savedTeamsList.querySelector(`li[data-team-id="${teamId}"]`);
+        if (!li || li.querySelector('.edit-form')) return; // 既に編集中なら何もしない
+
+        li.innerHTML = `
+            <form class="edit-form">
+                <input type="text" value="${teamData.name}" required>
+                <textarea>${teamData.description || ''}</textarea>
+                <div class="edit-form-actions">
+                    <button type="submit">Save</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>`;
         li.querySelector('.cancel-btn').addEventListener('click', () => renderSavedTeams());
         li.querySelector('.edit-form').addEventListener('submit', (event) => {
             event.preventDefault();
             const newName = li.querySelector('input').value.trim();
             const newDesc = li.querySelector('textarea').value.trim();
             if (!newName) { alert('Team Name is required.'); return; }
-            updateTeam(teamId, newName, newDesc);
+            
+            const teamIndex = teams.findIndex(t => t.id === teamId);
+            if (teamIndex > -1) {
+                teams[teamIndex].name = newName;
+                teams[teamIndex].description = newDesc;
+                saveTeamsToStorage(teams);
+                renderSavedTeams();
+            }
         });
     }
-
-    function updateTeam(teamId, newName, newDesc) {
-        let teams = getSavedTeams();
-        const teamIndex = teams.findIndex(t => t.id === teamId);
-        if (teamIndex > -1) {
-            teams[teamIndex].name = newName;
-            teams[teamIndex].description = newDesc;
-            saveTeamsToStorage(teams);
-            renderSavedTeams();
-        }
-    }
     
+    // チームを読み込む
     function loadTeam(teamId) {
         const teams = getSavedTeams();
         const teamDataToLoad = teams.find(t => t.id === teamId);
         if (!teamDataToLoad) return;
-
+        
+        loadTeamData(teamDataToLoad);
         currentlyLoadedTeamId = teamId;
-
-        currentMode = teamDataToLoad.mode;
+        closeSidePanel();
+    }
+    
+    // チームデータをUIに反映させる共通関数
+    function loadTeamData(teamData) {
+        currentMode = teamData.mode;
+        // モードボタンの表示を更新
         modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === currentMode);
         });
         
-        renderTeamSlots();
+        renderTeamSlots(); // 新しいモードでスロットを再描画
+        
         const allSlots = document.querySelectorAll('.team-slot');
-        const flatTeamIds = teamDataToLoad.teams.flat();
+        const flatTeamIds = teamData.teams.flat();
+
         allSlots.forEach((slot, index) => {
             const charId = flatTeamIds[index];
             if (charId) {
@@ -395,46 +428,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        //loadedTeamName.textContent = teamDataToLoad.name;
-        loadedTeamDesc.value = teamDataToLoad.description; // textContentからvalueに変更
-        //loadedTeamInfo.classList.remove('hidden');
-        closeSidePanel();
+        loadedTeamDesc.value = teamData.description || '';
     }
 
-    // --- Share Modal Functions ---
-    function openShareModal(teamId = null) {
-        let teamData;
-        
-        if (teamId) {
-            // 保存されたチームから読み込み
-            const teams = getSavedTeams();
-            teamData = teams.find(t => t.id === teamId);
-            if (!teamData) return;
-        } else {
-            // 現在のチーム状態から生成
-            teamData = generateCurrentTeamData();
-            if (!teamData) {
-                alert('チームが空です。キャラクターを配置してから共有してください。');
-                return;
-            }
-        }
+    // チームを削除
+    function deleteTeam(teamId) {
+        if (!confirm('Are you sure you want to delete this team?')) return;
+        let teams = getSavedTeams();
+        teams = teams.filter(t => t.id !== teamId);
+        saveTeamsToStorage(teams);
+        renderSavedTeams();
+    }
+    
+    // --- チーム共有（URL/コード/QR）関連 ---
 
+    // 共有モーダルを開く
+    function openShareModal(teamId = null) {
+        const teamData = teamId 
+            ? getSavedTeams().find(t => t.id === teamId)
+            : generateCurrentTeamData();
+
+        if (!teamData) {
+            alert('The team is empty. Please add characters before sharing.');
+            return;
+        }
+        
         const shareData = {
-            n: teamData.name,         
-            d: teamData.description,  
             m: teamData.mode,
             t: teamData.teams
         };
         
         const jsonString = JSON.stringify(shareData);
         const encodedString = btoa(encodeURIComponent(jsonString));
-        
         const shareUrl = `${window.location.origin}${window.location.pathname}#${encodedString}`;
 
         shareUrlInput.value = shareUrl;
-        
-        // チームコードも表示
-        displayTeamCode(encodedString, teamData);
         generateQrCode(shareUrl);
         shareModal.classList.remove('hidden');
     }
@@ -443,129 +471,23 @@ document.addEventListener('DOMContentLoaded', () => {
         shareModal.classList.add('hidden');
     }
 
-    copyUrlButton.addEventListener('click', () => {
-        shareUrlInput.select();
-        navigator.clipboard.writeText(shareUrlInput.value)
-            .then(() => {
-                alert('Link copied to clipboard!');
-            })
-            .catch(err => {
-                console.error('Copy failed: ', err);
-                try {
-                    document.execCommand('copy');
-                    alert('Link copied to clipboard! (fallback)');
-                } catch (copyErr) {
-                    alert('Sorry, could not copy the link.');
-                }
-            });
-    });
-
-    // 現在のチーム状態からチームデータを生成
+    // 現在のチーム状態から共有用データを生成
     function generateCurrentTeamData() {
-        const allSlots = document.querySelectorAll('.team-slot');
-        const teamIds = Array.from(allSlots).map(slot => slot.dataset.characterId || null);
-        
-        // チームが空かどうかチェック
-        if (teamIds.every(id => id === null)) {
-            return null;
-        }
+        const teamIds = Array.from(document.querySelectorAll('.team-slot')).map(slot => slot.dataset.characterId || null);
+        if (teamIds.every(id => id === null)) return null;
         
         const teams = [];
         for (let i = 0; i < teamIds.length; i += 4) {
             teams.push(teamIds.slice(i, i + 4));
         }
         
-        const teamName = loadedTeamDesc.value ? 
-            (loadedTeamName.textContent !== 'チームメモ' ? loadedTeamName.textContent : '共有チーム') : 
-            '共有チーム';
-            
         return {
-            id: 'current-' + Date.now().toString(),
-            name: teamName,
-            description: loadedTeamDesc.value || '',
             mode: currentMode,
             teams: teams
         };
     }
-
-    // チームコードを表示する関数
-    function displayTeamCode(encodedCode, teamData) {
-        const characterCount = teamData.teams.flat().filter(id => id !== null).length;
-        
-        // モーダル内にチームコード表示エリアを追加
-        const existingCodeDisplay = shareModal.querySelector('.team-code-display');
-        if (existingCodeDisplay) {
-            existingCodeDisplay.remove();
-        }
-        
-        const codeDisplay = document.createElement('div');
-        codeDisplay.className = 'team-code-display';
-        codeDisplay.innerHTML = `
-            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 5px;">
-                <h4>チームコード</h4>
-                <textarea readonly style="width: 100%; height: 80px; margin: 10px 0; font-family: monospace; font-size: 12px; resize: vertical;">${encodedCode}</textarea>
-                <button id="copy-team-code-button" style="padding: 8px 16px; margin-right: 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer;">チームコードをコピー</button>
-                <div style="margin-top: 10px; font-size: 12px; color: #666;">
-                    <strong>チーム情報:</strong><br>
-                    名前: ${teamData.name}<br>
-                    モード: ${teamData.mode}<br>
-                    キャラクター数: ${characterCount}
-                    ${teamData.description ? `<br>説明: ${teamData.description}` : ''}
-                </div>
-            </div>
-        `;
-        
-        // QRコード表示の前に挿入
-        shareModal.querySelector('.modal-content').insertBefore(codeDisplay, qrcodeDisplay);
-        
-        // チームコードコピー機能
-        document.getElementById('copy-team-code-button').addEventListener('click', () => {
-            const textarea = codeDisplay.querySelector('textarea');
-            textarea.select();
-            navigator.clipboard.writeText(textarea.value)
-                .then(() => {
-                    alert('チームコードをクリップボードにコピーしました！');
-                })
-                .catch(err => {
-                    console.error('Copy failed: ', err);
-                    try {
-                        document.execCommand('copy');
-                        alert('チームコードをクリップボードにコピーしました！');
-                    } catch (copyErr) {
-                        alert('コピーに失敗しました。');
-                    }
-                });
-        });
-    }
-
-    // チーム共有ボタンを追加する関数（チームスロットの近くに配置）
-    function addCurrentTeamShareButton() {
-        // 既存のボタンがあれば削除
-        const existingButton = document.querySelector('.current-team-share-button');
-        if (existingButton) {
-            existingButton.remove();
-        }
-        
-        const shareButton = document.createElement('button');
-        shareButton.className = 'current-team-share-button';
-        shareButton.textContent = '現在のチームを共有';
-        shareButton.style.cssText = `
-            margin: 10px 0;
-            padding: 10px 20px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        `;
-        
-        shareButton.addEventListener('click', () => openShareModal());
-        
-        // チームスロットコンテナの後に追加
-        teamSlotsContainer.parentNode.insertBefore(shareButton, loadedTeamInfo);
-    }
-
+    
+    // QRコードを生成
     function generateQrCode(url) {
         qrcodeDisplay.innerHTML = '';
         try {
@@ -578,7 +500,8 @@ document.addEventListener('DOMContentLoaded', () => {
             qrcodeDisplay.textContent = "QR Code could not be generated.";
         }
     }
-
+    
+    // URLハッシュからチームを読み込む
     function loadTeamFromUrl() {
         const hash = window.location.hash.substring(1);
         if (!hash) return false;
@@ -588,116 +511,51 @@ document.addEventListener('DOMContentLoaded', () => {
             const sharedData = JSON.parse(jsonString);
 
             if (sharedData.m && sharedData.t) {
-                currentlyLoadedTeamId = null;
-                currentMode = sharedData.m;
-                modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.mode === currentMode);
-                });
-                renderTeamSlots();
-
-                const allSlots = document.querySelectorAll('.team-slot');
-                const flatTeamIds = sharedData.t.flat();
-                allSlots.forEach((slot, index) => {
-                    const charId = flatTeamIds[index];
-                    if (charId) {
-                        const character = allCharacters.find(c => c.id == charId);
-                        if (character) fillSlot(slot, character);
-                    }
-                });
-
-                if (sharedData.n) {
-                    //loadedTeamName.textContent = sharedData.n;
-                    loadedTeamDesc.value = sharedData.d || ''; // textContentからvalueに変更
-                    //loadedTeamInfo.classList.remove('hidden');
-                }
-
+                loadTeamData(sharedData);
                 alert('Team loaded from URL!');
+                // URLからハッシュを削除してリロードを防ぐ
                 history.pushState("", document.title, window.location.pathname + window.location.search);
-                return true; 
+                return true;
             }
         } catch (e) {
             console.error("Failed to load team from URL:", e);
-            alert("Could not load team from the provided link. It might be invalid.");
+            alert("Could not load team from the provided link.");
             history.pushState("", document.title, window.location.pathname + window.location.search);
         }
-        return false; 
+        return false;
     }
     
-    function deleteTeam(teamId) {
-        if (!confirm('Are you sure you want to delete this team?')) { return; }
-        let teams = getSavedTeams();
-        teams = teams.filter(t => t.id !== teamId);
-        saveTeamsToStorage(teams);
-        renderSavedTeams();
-    }
+    // チームコードから読み込み
+    function loadTeamFromCode() {
+        const code = teamCodeInput.value.trim();
+        if (!code) {
+            alert('Please paste a team code.');
+            return;
+        }
+        try {
+            const jsonString = decodeURIComponent(atob(code));
+            const teamData = JSON.parse(jsonString);
 
-    function updateTeamStats() {
-        const partyRows = document.querySelectorAll('.party-row');
-        teamStatsContainer.innerHTML = '';
-        let anyPartyHasMembers = false;
-
-        partyRows.forEach((row) => {
-            const slotsInParty = row.querySelectorAll('.team-slot');
-            const charactersInParty = Array.from(slotsInParty).map(slot => slot.dataset.characterId).filter(id => id).map(id => allCharacters.find(c => c.id == id));
-
-            if (charactersInParty.length > 0) {
-                anyPartyHasMembers = true;
-                const attrCounts = {};
-                const specCounts = {};
-                charactersInParty.forEach(char => {
-                    if (!char) return;
-                    attrCounts[char.attribute] = (attrCounts[char.attribute] || 0) + 1;
-                    char.specialties.forEach(spec => {
-                        specCounts[spec] = (specCounts[spec] || 0) + 1;
-                    });
-                });
-
-                const statsBlock = document.createElement('div');
-                statsBlock.className = 'party-stats-block';
-                const partyLabelText = row.querySelector('.party-label')?.textContent || 'Team';
-                statsBlock.innerHTML = `<h4>${partyLabelText} - Stats</h4><div class="stats-nav"><button class="stats-nav-button active" data-stats="attributes">Attributes</button><button class="stats-nav-button" data-stats="specialties">Specialties</button></div><div class="stats-display-area"></div>`;
-                teamStatsContainer.appendChild(statsBlock);
-
-                const navButtons = statsBlock.querySelectorAll('.stats-nav-button');
-                const displayArea = statsBlock.querySelector('.stats-display-area');
-
-                const displayPartyStats = (view) => {
-                    const dataToShow = view === 'attributes' ? attrCounts : specCounts;
-                    displayArea.innerHTML = '';
-                    Object.entries(dataToShow).sort((a,b) => b[1] - a[1]).forEach(([key, value]) => {
-                        const item = document.createElement('div');
-                        item.className = 'stat-item';
-                        
-                        // ▼▼▼ ここから追加 ▼▼▼
-                        // 表示が 'attributes' の場合、属性ごとの色クラスを追加
-                        if (view === 'attributes') {
-                            const attributeClass = `attr-${key.toLowerCase()}`;
-                            item.classList.add(attributeClass);
-                        }
-                        // ▲▲▲ ここまで追加 ▲▲▲
-                        
-                        item.innerHTML = `<span>${key}</span><span class="count">${value}</span>`;
-                        displayArea.appendChild(item);
-                    });
-                };
-                
-                navButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        navButtons.forEach(b => b.classList.remove('active'));
-                        e.target.classList.add('active');
-                        displayPartyStats(e.target.dataset.stats);
-                    });
-                });
-                displayPartyStats('attributes');
+            if (teamData.m && teamData.t) {
+                loadTeamData(teamData);
+                currentlyLoadedTeamId = null; // 外部データなので保存済みIDは解除
+                alert('Team loaded successfully!');
+                closeSidePanel();
+            } else {
+                throw new Error('Invalid data format');
             }
-        });
-        teamStatsContainer.classList.toggle('hidden', !anyPartyHasMembers);
+        } catch(e) {
+            alert('Invalid or corrupted team code.');
+            console.error('Failed to load from team code:', e);
+        }
     }
 
-    // --- Event Listeners ---
+    // --- イベントリスナーの設定 ---
+
+    // モード切替
     modeSelector.addEventListener('click', (event) => {
-        const target = event.target;
-        if (target.tagName === 'BUTTON') {
+        const target = event.target.closest('.mode-btn');
+        if (target) {
             currentMode = target.dataset.mode;
             modeSelector.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
             target.classList.add('active');
@@ -705,59 +563,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // サイドパネルの開閉
     menuButton.addEventListener('click', openSidePanel);
     closePanelButton.addEventListener('click', closeSidePanel);
     sidePanelOverlay.addEventListener('click', (event) => {
         if (event.target === sidePanelOverlay) closeSidePanel();
     });
-    
-    saveTeamForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const name = teamNameInput.value.trim();
-        const description = teamDescInput.value.trim();
-        if (!name) { alert('Team Name is required.'); return; }
-        const allSlots = document.querySelectorAll('.team-slot');
-        const teamIds = Array.from(allSlots).map(slot => slot.dataset.characterId || null);
-        const teams = [];
-        for (let i = 0; i < teamIds.length; i += 4) {
-            teams.push(teamIds.slice(i, i + 4));
-        }
-        const newTeamData = { id: Date.now().toString(), name, description, mode: currentMode, teams: teams };
-        const savedTeams = getSavedTeams();
-        savedTeams.push(newTeamData);
-        saveTeamsToStorage(savedTeams);
-        teamNameInput.value = '';
-        teamDescInput.value = '';
-        renderSavedTeams();
-    });
 
-    searchBar.addEventListener('input', applyFilters);
-
-    langButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const selectedLang = button.dataset.lang;
-            langButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            disclaimerTexts.forEach(text => text.classList.add('hidden'));
-            const targetText = document.querySelector(`.disclaimer-text.lang-${selectedLang}`);
-            if (targetText) {
-                targetText.classList.remove('hidden');
-            }
-        });
-    });
-
-    document.addEventListener('dragover', (event) => {
-        const viewportHeight = window.innerHeight;
-        const threshold = 60;
-        const scrollSpeed = 15;
-        const y = event.clientY;
-        if (y < threshold) {
-            window.scrollBy(0, -scrollSpeed);
-        } else if (y > viewportHeight - threshold) {
-            window.scrollBy(0, scrollSpeed);
-        }
-    });
-
+    // サイドパネルのタブ切替
     panelNavButtons.forEach(button => {
         button.addEventListener('click', () => {
             const targetPanelId = `panel-content-${button.dataset.panel}`;
@@ -767,316 +580,82 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById(targetPanelId).classList.add('active');
         });
     });
+    
+    // 現在のチームを保存
+    saveTeamForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = teamNameInput.value.trim();
+        if (!name) { alert('Team Name is required.'); return; }
 
-    // Modal close event listeners
-    closeShareModalButton.addEventListener('click', closeShareModal);
-    shareModal.addEventListener('click', (event) => {
-        if (event.target === shareModal) {
-            closeShareModal();
-        }
-    });
-
-    // Descriptionの自動保存
-    const teamDescTextarea = document.getElementById('loaded-team-desc');
-    const saveStatusElement = document.getElementById('save-status');
-
-    teamDescTextarea.addEventListener('blur', () => {
-        // 編集中のチームがあり、内容が変更されていた場合のみ保存
-        if (!currentlyLoadedTeamId) return;
-
-        let teams = getSavedTeams();
-        const teamIndex = teams.findIndex(t => t.id === currentlyLoadedTeamId);
+        const teamData = generateCurrentTeamData();
+        if (!teamData) { alert('Cannot save an empty team.'); return; }
         
-        if (teamIndex > -1 && teams[teamIndex].description !== teamDescTextarea.value) {
-            teams[teamIndex].description = teamDescTextarea.value;
-            saveTeamsToStorage(teams);
-            
-            // 保存したことをユーザーにフィードバック
-            saveStatusElement.textContent = 'Saved!';
-            setTimeout(() => {
-                saveStatusElement.textContent = '';
-            }, 2000); // 2秒後にメッセージを消す
-
-            // サイドパネルのリストも更新
-            renderSavedTeams();
-        }
-    });
-
-    // チームコード生成
-    function generateTeamCode() {
-        const teamName = document.getElementById('team-name').value;
-        const description = document.getElementById('team-description').value;
-        const characterIds = document.getElementById('character-ids').value;
-        const mode = document.getElementById('mode-select').value;
-        
-        if (!teamName || !characterIds) {
-            showError('チーム名とキャラクターIDは必須です');
-            return;
-        }
-        
-        // キャラクターIDを配列に変換
-        const ids = characterIds.split(',').map(id => id.trim()).filter(id => id);
-        if (ids.length === 0) {
-            showError('有効なキャラクターIDを入力してください');
-            return;
-        }
-        
-        // チームデータ作成
-        const teamData = {
-            n: teamName,
-            d: description,
-            m: mode,
-            t: []
+        const newTeam = {
+            id: Date.now().toString(),
+            name: name,
+            description: teamDescInput.value.trim(),
+            mode: teamData.mode,
+            teams: teamData.teams
         };
         
-        // 4人ずつのパーティに分割
-        for (let i = 0; i < ids.length; i += 4) {
-            const party = ids.slice(i, i + 4);
-            // 4人未満の場合はnullで埋める
-            while (party.length < 4) {
-                party.push(null);
-            }
-            teamData.t.push(party);
-        }
-        
-        // Base64エンコード
-        const jsonString = JSON.stringify(teamData);
-        const encodedCode = btoa(encodeURIComponent(jsonString));
-        
-        // 結果表示
-        const outputDiv = document.getElementById('generated-output');
-        outputDiv.style.display = 'block';
-        outputDiv.innerHTML = `
-            <strong>生成されたチームコード:</strong>
-            ${encodedCode}
-            
-            <strong>チーム情報:</strong>
-            名前: ${teamName}
-            説明: ${description}
-            モード: ${mode}
-            キャラクター数: ${ids.length}
-        `;
-        
-        showSuccess('チームコードが生成されました！');
-    }
+        const savedTeams = getSavedTeams();
+        savedTeams.push(newTeam);
+        saveTeamsToStorage(savedTeams);
 
-    // QRコード生成
-    function generateQRCode() {
-        const teamName = document.getElementById('team-name').value;
-        const description = document.getElementById('team-description').value;
-        const characterIds = document.getElementById('character-ids').value;
-        const mode = document.getElementById('mode-select').value;
-        
-        if (!teamName || !characterIds) {
-            showError('チーム名とキャラクターIDは必須です');
-            return;
-        }
-        
-        const ids = characterIds.split(',').map(id => id.trim()).filter(id => id);
-        const teamData = {
-            n: teamName,
-            d: description,
-            m: mode,
-            t: []
-        };
-        
-        for (let i = 0; i < ids.length; i += 4) {
-            const party = ids.slice(i, i + 4);
-            while (party.length < 4) {
-                party.push(null);
-            }
-            teamData.t.push(party);
-        }
-        
-        const jsonString = JSON.stringify(teamData);
-        const encodedCode = btoa(encodeURIComponent(jsonString));
-        
-        try {
-            const qr = qrcode(0, 'M');
-            qr.addData(encodedCode);
-            qr.make();
-            
-            document.getElementById('qr-display').innerHTML = `
-                <h3>生成されたQRコード</h3>
-                ${qr.createImgTag(4, 8)}
-                <p style="font-size: 12px; color: #666;">
-                    このQRコードをスキャンまたは画像として保存してください
-                </p>
-            `;
-            
-            showSuccess('QRコードが生成されました！');
-        } catch (e) {
-            showError('QRコード生成に失敗しました: ' + e.message);
-        }
-    }
+        teamNameInput.value = '';
+        teamDescInput.value = '';
+        renderSavedTeams();
+    });
 
-    // チーム読み込み
-    // Load Teamパネルの関数を統一
-    function loadTeamFromCode() {
-        const codeInput = document.getElementById('team-code-input');
-        if (!codeInput) {
-            console.error('Team code input element not found');
-            return;
-        }
-        
-        const code = codeInput.value.trim();
-        if (!code) {
-            //showMessage('チームコードを入力してください', 'error');
-            return;
-        }
-        
-        try {
-            const jsonString = decodeURIComponent(atob(code));
-            const teamData = JSON.parse(jsonString);
-            
-            if (teamData.m && teamData.t) {
-                loadTeamData(teamData);
-                //showMessage('チーム読み込み成功！', 'success');
-                closeSidePanel();
-            } else {
-                throw new Error('無効なチームデータ形式');
-            }
-        } catch (e) {
-            //showMessage('無効なチームコードです: ' + e.message, 'error');
-        }
-    }
+    // 検索バー
+    searchBar.addEventListener('input', applyFilters);
 
-    const loadTeamFromCodeButton = document.getElementById("load-team-from-code-button");
-    loadTeamFromCodeButton.addEventListener('click', loadTeamFromCode);
-
-    function loadTeamData(teamData) {
-        // 保存されたチームのIDではないため、選択を解除
-        currentlyLoadedTeamId = null; 
-        currentMode = teamData.m;
-
-        // モード選択ボタンの表示を更新
-        modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.mode === currentMode);
-        });
-
-        // 新しいモードに合わせてチームスロットを再描画
-        renderTeamSlots(); 
-
-        const allSlots = document.querySelectorAll('.team-slot');
-        // teamData.t は [['id1', 'id2', ...], ['id5', ...]] のような配列なので、
-        // flat()で ['id1', 'id2', ..., 'id5', ...] のような一次元配列に変換します。
-        const flatTeamIds = teamData.t.flat();
-
-        allSlots.forEach((slot, index) => {
-            const charId = flatTeamIds[index];
-            if (charId) {
-                const character = allCharacters.find(c => c.id == charId);
-                if (character) {
-                    fillSlot(slot, character);
-                } else {
-                    clearSlot(slot);
-                }
-            } else {
-                clearSlot(slot);
-            }
-        });
-
-        // チーム名や説明があればテキストエリアに反映
-        loadedTeamDesc.value = teamData.d || '';
-    }
-
-
-
-
-    function clearInput() {
-        document.getElementById('team-code-input').value = '';
-        document.getElementById('load-result').innerHTML = '';
-    }
-        
-    // チームプレビュー表示
-    function displayTeamPreview(teams) {
-        const previewDiv = document.getElementById('team-preview');
-        previewDiv.innerHTML = '';
-        
-        teams.forEach((party, partyIndex) => {
-            const partyLabel = document.createElement('div');
-            partyLabel.style.width = '100%';
-            partyLabel.style.fontWeight = 'bold';
-            partyLabel.style.marginTop = partyIndex > 0 ? '20px' : '10px';
-            partyLabel.style.marginBottom = '10px';
-            partyLabel.textContent = `パーティ ${partyIndex + 1}:`;
-            previewDiv.appendChild(partyLabel);
-            
-            party.forEach((charId, slotIndex) => {
-                const slot = document.createElement('div');
-                slot.className = 'character-slot';
-                
-                if (charId && sampleCharacters[charId]) {
-                    const char = sampleCharacters[charId];
-                    slot.className += ' filled';
-                    slot.innerHTML = `
-                        <div style="font-size: 10px; font-weight: bold;">${char.name}</div>
-                        <div style="font-size: 8px;">${'★'.repeat(char.rarity)}</div>
-                        <div style="font-size: 8px;">${char.attribute}</div>
-                    `;
-                } else {
-                    slot.textContent = `スロット ${slotIndex + 1}`;
-                }
-                
-                previewDiv.appendChild(slot);
+    // 言語切替
+    langButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedLang = button.dataset.lang;
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            disclaimerTexts.forEach(text => {
+                text.classList.toggle('hidden', !text.classList.contains(`lang-${selectedLang}`));
             });
         });
-    }
+    });
     
-    // 入力クリア
-    function clearInput() {
-        document.getElementById('team-code-input').value = '';
-        document.getElementById('load-result').innerHTML = '';
-        document.getElementById('team-preview').innerHTML = '';
-    }
+    // 共有モーダルのURLコピー
+    copyUrlButton.addEventListener('click', () => {
+        shareUrlInput.select();
+        navigator.clipboard.writeText(shareUrlInput.value)
+            .then(() => alert('Link copied to clipboard!'))
+            .catch(() => alert('Failed to copy link.'));
+    });
 
-    const clearInputButton = document.getElementById('clear-input-button');
-    if (clearInputButton) clearInputButton.addEventListener('click', clearInput);
+    // 共有モーダルの閉じるボタン
+    closeShareModalButton.addEventListener('click', closeShareModal);
+    shareModal.addEventListener('click', (event) => {
+        if (event.target === shareModal) closeShareModal();
+    });
     
-    // QRファイルアップロード処理
-    function handleQRUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            showError('QR読み取り機能は実装中です。現在はチームコードの手入力をお使いください。');
-        }
-    }
-    
-    // エラー表示
-    function showError(message) {
-        const existingError = document.querySelector('.error-message');
-        if (existingError) existingError.remove();
-        
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        document.querySelector('.container').appendChild(errorDiv);
-        
-        setTimeout(() => errorDiv.remove(), 5000);
-    }
-    
-    // 成功メッセージ表示
-    function showSuccess(message) {
-        const existingSuccess = document.querySelector('.success-message');
-        if (existingSuccess) existingSuccess.remove();
-        
-        const successDiv = document.createElement('div');
-        successDiv.className = 'success-message';
-        successDiv.textContent = message;
-        document.querySelector('.container').appendChild(successDiv);
-        
-        setTimeout(() => successDiv.remove(), 3000);
-    }
+    // チームコード読み込みボタン
+    loadTeamFromCodeButton.addEventListener('click', loadTeamFromCode);
+    clearInputButton.addEventListener('click', () => teamCodeInput.value = '');
 
-    // Translate button
-    /*
-    function translator_button() {
-        if (result == "EN") {
+    // チームメモの自動保存
+    let saveTimeout;
+    loadedTeamDesc.addEventListener('input', () => {
+        if (!currentlyLoadedTeamId) return; // 保存済みチームを編集中のみ
+        clearTimeout(saveTimeout);
+        saveStatusElement.textContent = 'Saving...';
+        saveTimeout = setTimeout(() => {
+            let teams = getSavedTeams();
+            const teamIndex = teams.findIndex(t => t.id === currentlyLoadedTeamId);
+            if (teamIndex > -1) {
+                teams[teamIndex].description = loadedTeamDesc.value;
+                saveTeamsToStorage(teams);
+                saveStatusElement.textContent = 'Saved!';
+                setTimeout(() => saveStatusElement.textContent = '', 2000);
+            }
+        }, 1000); // 1秒後に入力がなければ保存
+    });
 
-        } else if (result == "JP") {
-
-        } else {    // CN
-
-        }
-    }
-    */
 });
