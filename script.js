@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 初期化処理 ---
     // キャラクターデータを読み込み、初期表示を実行
-    fetch('./characters.json')
+    fetch('characters.json')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();

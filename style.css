@@ -159,6 +159,17 @@ body {
     color: #f9ca24;
 }
 
+/* スロット内の属性表示スタイル */
+.slot-filled .attribute {
+    padding: 2px 8px;
+    border-radius: 10px; /* 角を丸くする */
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    margin-top: 4px; /* 上の要素との間隔を調整 */
+}
+
 /* メインコンテンツ（フィルターと一覧） */
 .main-content {
     padding: 20px;
@@ -392,7 +403,6 @@ body {
 }
 .disclaimer-text p { margin: 5px 0; }
 .disclaimer-text strong { color: #fff; }
-.hidden { display: none; }
 
 /* ヘッダーのメニューボタン */
 .menu-button {
@@ -593,6 +603,9 @@ body {
     border: 5px solid #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+/* CSSの順番、競合によりモーダルが表示されてしまう */
+.hidden { display: none !important; }
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
