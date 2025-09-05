@@ -109,6 +109,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'rarity-asc':
                     sortedCharacters.sort((a, b) => (a.rarity || 0) - (b.rarity || 0));
                     break;
+                case 'version-desc':
+                    sortedCharacters.sort((a, b) => {
+                        // バージョンを数値に変換（nullの場合は0として扱う）
+                        const versionA = a.version ? parseFloat(a.version) : 0;
+                        const versionB = b.version ? parseFloat(b.version) : 0;
+                        // まずバージョンで比較
+                        if (versionB !== versionA) {
+                            return versionB - versionA; // 降順
+                        }
+                        // バージョンが同じならIDの降順で比較
+                        return b.id - a.id;
+                    });
+                    break;
+                case 'version-asc':
+                    sortedCharacters.sort((a, b) => {
+                        const versionA = a.version ? parseFloat(a.version) : 0;
+                        const versionB = b.version ? parseFloat(b.version) : 0;
+                        if (versionA !== versionB) {
+                            return versionA - versionB; // 昇順
+                        }
+                        return b.id - a.id;
+                    });
+                    break;
+                    
                 default: // <<< この default ケースを追加
                     // デフォルトはIDの降順（番号の逆順）でソート
                     sortedCharacters.sort((a, b) => b.id - a.id);
