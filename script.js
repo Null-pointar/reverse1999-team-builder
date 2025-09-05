@@ -120,6 +120,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- UI表示と生成の関数 ---
 
+    // キャラクターカードのHTMLを生成する共通関数
+    function generateCardHTML(character) {
+        const rarityStars = '★'.repeat(character.rarity || 0);
+        const attributeClass = `attr-${character.attribute.toLowerCase()}`;
+        const damageTypeClass = `type-${character.damageType.toLowerCase()}`;
+
+        return `
+            <img src="images/${character.id}.png" alt="${character.name}" class="character-portrait" loading="lazy" onerror="this.style.display='none'">
+            
+            <div class="card-info-overlay">
+                <div class="card-header">
+                    <div class="attribute ${attributeClass}">${character.attribute}</div>
+                    <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
+                </div>
+                <div class="card-footer">
+                    <div class="rarity">${rarityStars}</div>
+                    <div class="name">${character.name}</div>
+                    <div class="tags">${character.tags.join(' / ')}</div>
+                </div>
+            </div>
+        `;
+    }
+
     // キャラクター一覧を表示
     function displayCharacters(characters) {
         characterListElement.innerHTML = ''; 
@@ -129,19 +152,28 @@ document.addEventListener('DOMContentLoaded', () => {
             card.draggable = true;
             card.dataset.id = character.id;
             
+            /*
             const rarityStars = '★'.repeat(character.rarity || 0);
             const attributeClass = `attr-${character.attribute.toLowerCase()}`;
             const damageTypeClass = `type-${character.damageType.toLowerCase()}`;
             const specialtiesHTML = character.specialties.map(spec => `<span class="specialty-tag">${spec}</span>`).join('');
             
             card.innerHTML = `
-                <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
-                <div class="attribute ${attributeClass}">${character.attribute}</div>
-                <div class="rarity">${rarityStars}</div>
-                <div class="specialties">${specialtiesHTML}</div>
-                <div class="name">${character.name}</div>
-                <div class="tags">${character.tags.join(', ')}</div>
-            `;
+                <img src="images/${character.id}.png" alt="${character.name}" class="character-portrait" loading="lazy" onerror="this.style.display='none'">
+                
+                <div class="card-info-overlay">
+                    <div class="card-header">
+                        <div class="attribute ${attributeClass}">${character.attribute}</div>
+                        <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="rarity">${rarityStars}</div>
+                        <div class="name">${character.name}</div>
+                        <div class="tags">${character.tags.join(' / ')}</div>
+                    </div>
+                </div>
+            `;*/
+            card.innerHTML = generateCardHTML(character);
             
             card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', character.id));
             characterListElement.appendChild(card);
@@ -314,8 +346,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // スロットにキャラクターを配置
     function fillSlot(slot, character) {
-        const attributeClass = `attr-${character.attribute.toLowerCase()}`;
-        slot.innerHTML = `<div class="name">${character.name}</div><div class="rarity">${'★'.repeat(character.rarity || 0)}</div><div class="attribute ${attributeClass}">${character.attribute}</div>`;
+        //const attributeClass = `attr-${character.attribute.toLowerCase()}`;
+        //slot.innerHTML = `<div class="name">${character.name}</div><div class="rarity">${'★'.repeat(character.rarity || 0)}</div><div class="attribute ${attributeClass}">${character.attribute}</div>`;
+        slot.innerHTML = generateCardHTML(character);
         slot.classList.add('slot-filled');
         slot.dataset.characterId = character.id;
         slot.setAttribute('draggable', true);
