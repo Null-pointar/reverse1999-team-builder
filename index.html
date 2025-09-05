@@ -5,49 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reverse: 1999 Team Builder</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 </head>
 <body>
 
     <header class="header">
         <button id="menu-button" class="menu-button">☰</button>
         <h1>Reverse: 1999 Team Builder</h1>
+        <!--<button id="lang-button">JP/EN/CN</button>-->
     </header>
 
     <div id="side-panel-overlay" class="side-panel-overlay hidden">
         <div id="side-panel" class="side-panel">
-            <h2>Saved Teams</h2>
             <button id="close-panel-button" class="close-panel-button">×</button>
+            <nav class="panel-nav">
+                <button class="panel-nav-button active" data-panel="teams">Saved Teams</button>
+                <button class="panel-nav-button" data-panel="loadteam">Load Team</button>
+                <button class="panel-nav-button" data-panel="howtouse">How to Use</button>
+            </nav>
+            <div class="panel-content-wrapper">
+                <div id="panel-content-teams" class="panel-content active">
+                    <div class="panel-section">
+                        <h3>Save Current Team</h3>
+                        <form id="save-team-form">
+                            <input type="text" id="team-name-input" placeholder="Team Name (Required)" required>
+                            <textarea id="team-desc-input" placeholder="Description..."></textarea>
+                            <button type="submit">Save</button>
+                        </form>
+                    </div>
+                    <div class="panel-section">
+                        <h3>Team List</h3>
+                        <ul id="saved-teams-list"></ul>
+                    </div>
+                </div>
+                
+                <div id="panel-content-loadteam" class="panel-content active">
+                    <div class="panel-section">
+                        <h3>Load Team</h3>
+                        <textarea id="team-code-input" placeholder="生成されたチームコードをここに貼り付けてください" rows="4"></textarea>
+                        <div class="button-group">
+                            <button type="button" id="load-team-from-code-button">チーム読み込み</button>
+                            <button type="button" id="clear-input-button">クリア</button>
+                        </div>
+                        <div id="load-result"></div>
+                    </div>
+                    <div class="panel-section">
+                        <h3>Team List</h3>
+                        <ul id="saved-teams-list"></ul>
+                    </div>
+                    <div class="qr-scanner">
+                        <p>QRコード画像をアップロード</p>
+                        <input type="file" id="qr-file-input" accept="image/*" onchange="handleQRUpload(event)">
+                        <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                            ※実際のQR読み取りには追加のライブラリが必要です
+                        </p>
+                    </div>
+                </div>
 
-            <div class="panel-section">
-                <h3>Save Current Team</h3>
-                <form id="save-team-form">
-                    <input type="text" id="team-name-input" placeholder="Team Name (Required)" required>
-                    <textarea id="team-desc-input" placeholder="Description..."></textarea>
-                    <button type="submit">Save</button>
-                </form>
-            </div>
-
-            <div class="panel-section">
-                <h3>Team List</h3>
-                <ul id="saved-teams-list">
-                    </ul>
+                <div id="panel-content-howtouse" class="panel-content">
+                    <div class="panel-section">
+                        <h3>基本的な使い方</h3>
+                        <ul>
+                            <li><strong>キャラクターを探す:</strong> 各種フィルターや検索バーでキャラクターを絞り込めます。</li>
+                            <li><strong>チームを組む:</strong> 一覧からキャラクターを上部のチームスロットへドラッグ＆ドロップします。</li>
+                            <li><strong>メンバーの変更:</strong> スロット内のキャラクターを別のスロットへドラッグすると場所を入れ替えられます。</li>
+                            <li><strong>メンバーを外す:</strong> スロット内のキャラクターをクリックするとチームから外れます。</li>
+                        </ul>
+                        <h3>チームの保存と読込</h3>
+                        <ol>
+                            <li>左上のメニューボタン(☰)からこのパネルを開きます。</li>
+                            <li>「Save Current Team」で名前等を入力し保存します。</li>
+                            <li>「Team List」の「Load」ボタンで編成を復元できます。</li>
+                            <li>「Edit」ボタンで名前と説明を編集できます。</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <section class="team-section">
-        <div id="team-slots" class="team-slots">
-            <div class="team-slot" data-slot-index="0">Slot 1</div>
-            <div class="team-slot" data-slot-index="1">Slot 2</div>
-            <div class="team-slot" data-slot-index="2">Slot 3</div>
-            <div class="team-slot" data-slot-index="3">Slot 4</div>
+     <section class="team-section">
+        <div id="mode-selector" class="mode-selector">
+            <button class="mode-btn active" data-mode="mode1">Mode 1</button>
+            <button class="mode-btn" data-mode="limbo">深眠域</button>
+            <button class="mode-btn" data-mode="4parties">4 Parties</button>
+        </div>
+
+        <div class="team-layout-container">
+            <div id="team-slots-container" class="team-slots-container"></div>
+            
+                 <div id="loaded-team-info" class="loaded-team-info">
+                    <h4 id="loaded-team-name">チームメモ</h4>
+                    <textarea id="loaded-team-desc" placeholder="このチームに関するメモ..."></textarea>
+                    <p id="save-status" class="save-status"></p>
+                </div>
+        </div>
+        <div class="team-display-wrapper">
+            <div id="team-stats-container" class="team-stats-container hidden">
+            </div>
         </div>
     </section>
 
     <main class="main-content">
         <section class="filter-section">
-            <input type="text" id="search-bar" placeholder="Search character...">
-
+            <input type="text" id="search-bar" placeholder="Search by character name...">
             <div class="filter-row">
                 <div class="filter-group">
                     <p class="filter-label">Attribute</p>
@@ -61,14 +122,13 @@
             </div>
             <p class="filter-label">Specialities</p>
             <div id="specialty-filters" class="specialty-filters"></div>
-
             <p class="filter-label">Tags</p>
             <div id="tag-filters" class="tag-filters"></div>
         </section>
-
         <div id="character-list" class="character-list-area"></div>
     </main>
-    
+
+
     <footer class="footer">
         <div class="language-switcher">
             
@@ -98,6 +158,17 @@
             </div>
         </div>
     </footer>
+
+    <div id="share-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal-button" class="close-modal-button">×</button>
+            <h3>Share Team</h3>
+            <p>Copy this link or scan the QR code to share.</p>
+            <input type="text" id="share-url-input" readonly>
+            <button id="copy-url-button">Copy Link</button>
+            <div id="qrcode-display"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
