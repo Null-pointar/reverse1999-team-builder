@@ -85,18 +85,19 @@ body {
 }
 .team-slot {
     width: 120px;
-    min-height: 180px;
+    min-height: 80px;
     border: 2px dashed #ccc;
     border-radius: 8px;
-    display: flex; /* 文字を中央揃えにするため */
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     background-color: #f9f9f9;
     font-size: 14px;
     color: #888;
     transition: background-color 0.2s, border-color 0.2s;
+    padding: 10px;
     box-sizing: border-box;
-    padding: 10px; /* 文字のためのパディング */
 }
 
 /* チームメモ */
@@ -197,6 +198,36 @@ body {
 }
 .team-slot.dragging {
     opacity: 0.4;
+}
+
+/* キャラクターが配置されたスロット */
+.slot-filled {
+    border-style: solid;
+    border-color: #a7bcf5;
+    background-color: #f0f5ff;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+.slot-filled .name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+.slot-filled .rarity {
+    font-size: 12px;
+    color: #f9ca24;
+}
+
+/* スロット内の属性表示スタイル */
+.slot-filled .attribute {
+    padding: 2px 8px;
+    border-radius: 10px; /* 角を丸くする */
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    margin-top: 4px; /* 上の要素との間隔を調整 */
 }
 
 /* メインコンテンツ（フィルターと一覧） */
@@ -321,17 +352,26 @@ body {
     border-color: #4a69bd;
 }
 
-/* 属性ごとの色分け (透明度を追加) */
-.attr-beast { background-color: rgba(130, 56, 56, 0.85); }
-.attr-plant { background-color: rgba(40, 102, 55, 0.85); }
-.attr-star { background-color: rgba(92, 135, 180, 0.85); }
-.attr-mineral { background-color: rgba(170, 130, 74, 0.85); }
-.attr-spirit { background-color: rgba(174, 102, 180, 0.85); }
-.attr-intellect { background-color: rgba(189, 170, 93, 0.85); }
+/* 属性ごとの色分け */
+/*
+.attr-beast { background-color: #c9823a; }
+.attr-plant { background-color: #64a23a; }
+.attr-star { background-color: #c9c23a; }
+.attr-mineral { background-color: #8c6eac; }
+.attr-spirit { background-color: #4b92b3; }
+.attr-intellect { background-color: #3a3a3a; }
+*/
+.attr-beast { background-color: #823838; }
+.attr-plant { background-color: #286637; }
+.attr-star { background-color: #5c87b4; }
+.attr-mineral { background-color: #aa824a; }
+.attr-spirit { background-color: #ae66b4; }
+.attr-intellect { background-color: #bdaa5d; }
 
-/* ダメージタイプごとの色分け (透明度を追加) */
-.type-reality { background-color: rgba(230, 126, 34, 0.85); }
-.type-mental { background-color: rgba(155, 89, 182, 0.85); }
+
+/* ダメージタイプごとの色分け */
+.type-reality { background-color: #e67e22; }
+.type-mental { background-color: #9b59b6; }
 
 /* タグ/専門分野フィルター */
 .specialty-filters, .tag-filters {
@@ -362,100 +402,50 @@ body {
 /* キャラクター一覧 */
 .character-list-area {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 15px;
 }
 
-/* --- 新しいキャラクターカードのスタイル（スロット共通版） --- */
-
-/* カードとスロット（中身あり）の共通コンテナスタイル */
-.character-card,
-.team-slot.slot-filled {
+/* キャラクターカード */
+.character-card {
+    border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #333;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    min-height: 180px;
-    /* 空スロットのスタイルを上書き */
-    border: none;
-    padding: 0;
-    font-size: inherit; /* 空スロットの文字サイズをリセット */
-    color: inherit; /* 空スロットの文字色をリセット */
-}
-
-/* カードとスロット（中身あり）にホバーした時に画像を拡大 */
-.character-card:hover .character-portrait,
-.team-slot.slot-filled:hover .character-portrait {
-    transform: scale(1.1);
-}
-
-/* カードの画像 (親が何であっても適用されるように) */
-.character-portrait {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    transition: transform 0.3s ease-out;
-}
-
-/* 文字情報全体を覆うオーバーレイ */
-.card-info-overlay {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    color: #fff;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.6) 50%, transparent 100%);
-}
-
-/* カード上部の情報 */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    font-weight: bold;
-}
-.card-header .attribute, .card-header .damage-type {
-    padding: 3px 8px;
-    border-radius: 12px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* カード下部の情報 */
-.card-footer {
+    padding: 15px;
     text-align: center;
-    padding: 0 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    position: relative;
 }
-.card-footer .rarity {
-    font-size: 14px;
+.character-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.character-card .rarity {
     color: #f9ca24;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    font-size: 16px;
+    margin-bottom: 5px;
 }
-.card-footer .name {
-    margin: 2px 0;
+.character-card .name {
+    margin: 8px 0;
     font-size: 18px;
     font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+    color: #333;
 }
-.card-footer .tags {
-    font-size: 11px;
-    opacity: 0.8;
-    margin-top: 4px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
+.character-card .tags {
+    font-size: 12px;
+    color: #666;
 }
-
+.character-card .attribute {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    margin-bottom: 8px;
+}
 .damage-type {
     position: absolute;
     top: 5px;

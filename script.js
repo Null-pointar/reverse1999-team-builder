@@ -109,30 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'rarity-asc':
                     sortedCharacters.sort((a, b) => (a.rarity || 0) - (b.rarity || 0));
                     break;
-                case 'version-desc':
-                    sortedCharacters.sort((a, b) => {
-                        // バージョンを数値に変換（nullの場合は0として扱う）
-                        const versionA = a.version ? parseFloat(a.version) : 0;
-                        const versionB = b.version ? parseFloat(b.version) : 0;
-                        // まずバージョンで比較
-                        if (versionB !== versionA) {
-                            return versionB - versionA; // 降順
-                        }
-                        // バージョンが同じならIDの降順で比較
-                        return b.id - a.id;
-                    });
-                    break;
-                case 'version-asc':
-                    sortedCharacters.sort((a, b) => {
-                        const versionA = a.version ? parseFloat(a.version) : 0;
-                        const versionB = b.version ? parseFloat(b.version) : 0;
-                        if (versionA !== versionB) {
-                            return versionA - versionB; // 昇順
-                        }
-                        return b.id - a.id;
-                    });
-                    break;
-                    
                 default: // <<< この default ケースを追加
                     // デフォルトはIDの降順（番号の逆順）でソート
                     sortedCharacters.sort((a, b) => b.id - a.id);
@@ -144,29 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- UI表示と生成の関数 ---
 
-    // キャラクターカードのHTMLを生成する共通関数
-    function generateCardHTML(character) {
-        const rarityStars = '★'.repeat(character.rarity || 0);
-        const attributeClass = `attr-${character.attribute.toLowerCase()}`;
-        const damageTypeClass = `type-${character.damageType.toLowerCase()}`;
-
-        return `
-            <img src="images/${character.id}.png" alt="${character.name}" class="character-portrait" loading="lazy" onerror="this.style.display='none'">
-            
-            <div class="card-info-overlay">
-                <div class="card-header">
-                    <div class="attribute ${attributeClass}">${character.attribute}</div>
-                    <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
-                </div>
-                <div class="card-footer">
-                    <div class="rarity">${rarityStars}</div>
-                    <div class="name">${character.name}</div>
-                    <div class="tags">${character.tags.join(' / ')}</div>
-                </div>
-            </div>
-        `;
-    }
-
     // キャラクター一覧を表示
     function displayCharacters(characters) {
         characterListElement.innerHTML = ''; 
@@ -176,28 +129,19 @@ document.addEventListener('DOMContentLoaded', () => {
             card.draggable = true;
             card.dataset.id = character.id;
             
-            /*
             const rarityStars = '★'.repeat(character.rarity || 0);
             const attributeClass = `attr-${character.attribute.toLowerCase()}`;
             const damageTypeClass = `type-${character.damageType.toLowerCase()}`;
             const specialtiesHTML = character.specialties.map(spec => `<span class="specialty-tag">${spec}</span>`).join('');
             
             card.innerHTML = `
-                <img src="images/${character.id}.png" alt="${character.name}" class="character-portrait" loading="lazy" onerror="this.style.display='none'">
-                
-                <div class="card-info-overlay">
-                    <div class="card-header">
-                        <div class="attribute ${attributeClass}">${character.attribute}</div>
-                        <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="rarity">${rarityStars}</div>
-                        <div class="name">${character.name}</div>
-                        <div class="tags">${character.tags.join(' / ')}</div>
-                    </div>
-                </div>
-            `;*/
-            card.innerHTML = generateCardHTML(character);
+                <div class="damage-type ${damageTypeClass}">${character.damageType}</div>
+                <div class="attribute ${attributeClass}">${character.attribute}</div>
+                <div class="rarity">${rarityStars}</div>
+                <div class="specialties">${specialtiesHTML}</div>
+                <div class="name">${character.name}</div>
+                <div class="tags">${character.tags.join(', ')}</div>
+            `;
             
             card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', character.id));
             characterListElement.appendChild(card);
@@ -370,9 +314,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // スロットにキャラクターを配置
     function fillSlot(slot, character) {
-        //const attributeClass = `attr-${character.attribute.toLowerCase()}`;
-        //slot.innerHTML = `<div class="name">${character.name}</div><div class="rarity">${'★'.repeat(character.rarity || 0)}</div><div class="attribute ${attributeClass}">${character.attribute}</div>`;
-        slot.innerHTML = generateCardHTML(character);
+        const attributeClass = `attr-${character.attribute.toLowerCase()}`;
+        slot.innerHTML = `<div class="name">${character.name}</div><div class="rarity">${'★'.repeat(character.rarity || 0)}</div><div class="attribute ${attributeClass}">${character.attribute}</div>`;
         slot.classList.add('slot-filled');
         slot.dataset.characterId = character.id;
         slot.setAttribute('draggable', true);
