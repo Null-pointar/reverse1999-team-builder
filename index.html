@@ -82,7 +82,7 @@
             <div id="team-slots-container" class="team-slots-container"></div>
             
             <div id="loaded-team-info" class="loaded-team-info">
-                <h4 id="loaded-team-title">Team Memo</h4>
+                <input type="text" id="loaded-team-title" class="team-title-input" placeholder="チーム名を入力…">
                 <textarea id="loaded-team-desc" placeholder="Notes about this team..."></textarea>
                 <p id="save-status" class="save-status"></p>
             </div>
@@ -110,6 +110,14 @@
             <div id="specialty-filters" class="specialty-filters"></div>
             <p class="filter-label">Tags</p>
             <div id="tag-filters" class="tag-filters"></div>
+
+            <div class="sort-section">
+                <span class="sort-label">Sort by:</span>
+                <button class="sort-btn active" data-sort="default">Default</button>
+                <button class="sort-btn" data-sort="rarity-desc">Rarity ▼</button>
+                <button class="sort-btn" data-sort="rarity-asc">Rarity ▲</button>
+            </div>
+            <!--</section>-->
         </section>
         <div id="character-list" class="character-list-area"></div>
     </main>

@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedAttribute = null;
     let currentMode = 'mode1'; // 初期モード
     let currentlyLoadedTeamId = null;
+    let currentSort = 'default';
 
     // --- 初期化処理 ---
     // キャラクターデータを読み込み、初期表示を実行
@@ -61,6 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilters();
         })
         .catch(error => console.error('Character data failed to load:', error));
+
+        const sortButtons = document.querySelectorAll('.sort-btn');
+        sortButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                sortButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentSort = button.dataset.sort;
+                applyFilters();
+            });
+        });
 
     // --- フィルター関連の関数 ---
 
@@ -85,10 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const tagMatch = selectedTags.every(tag => character.tags.includes(tag));
             const specialtyMatch = selectedSpecialties.every(spec => character.specialties.includes(spec));
             
-            return nameMatch && attributeMatch && damageTypeMatch && tagMatch && specialtyMatch;
-        });
-        displayCharacters(filteredCharacters);
-    }
+                    return nameMatch && attributeMatch && damageTypeMatch && tagMatch && specialtyMatch;
+            });
+
+            // ソート処理を追加
+            let sortedCharacters = [...filteredCharacters];
+            switch (currentSort) {
+                case 'rarity-desc':
+                    sortedCharacters.sort((a, b) => (b.rarity || 0) - (a.rarity || 0));
+                    break;
+                case 'rarity-asc':
+                    sortedCharacters.sort((a, b) => (a.rarity || 0) - (b.rarity || 0));
+                    break;
+            }
+
+            displayCharacters(sortedCharacters);
+        }
 
     // --- UI表示と生成の関数 ---
 
@@ -313,6 +336,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openSidePanel() {
         sidePanelOverlay.classList.remove('hidden');
+        teamNameInput.value = loadedTeamTitle.value; 
+        teamDescInput.value = loadedTeamDesc.value;
         renderSavedTeams();
     }
     function closeSidePanel() {
@@ -430,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // チーム名と説明をUIに反映
-        loadedTeamTitle.textContent = teamData.name || 'Team Memo';
+        loadedTeamTitle.value  = teamData.name || 'Team Memo';
         loadedTeamDesc.value = teamData.description || '';
     }
 
@@ -666,21 +691,25 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInputButton.addEventListener('click', () => teamCodeInput.value = '');
 
     // チームメモの自動保存
+    // 削除した場所に、以下の新しいコードを追加してください
     let saveTimeout;
-    loadedTeamDesc.addEventListener('input', () => {
-        if (!currentlyLoadedTeamId) return; // 保存済みチームを編集中のみ
+    function handleAutoSave() {
+        if (!currentlyLoadedTeamId) return;
         clearTimeout(saveTimeout);
         saveStatusElement.textContent = 'Saving...';
         saveTimeout = setTimeout(() => {
             let teams = getSavedTeams();
             const teamIndex = teams.findIndex(t => t.id === currentlyLoadedTeamId);
             if (teamIndex > -1) {
+                teams[teamIndex].name = loadedTeamTitle.value; // チーム名も保存
                 teams[teamIndex].description = loadedTeamDesc.value;
                 saveTeamsToStorage(teams);
                 saveStatusElement.textContent = 'Saved!';
                 setTimeout(() => saveStatusElement.textContent = '', 2000);
             }
-        }, 1000); // 1秒後に入力がなければ保存
-    });
+        }, 1000);
+    }
 
+    loadedTeamTitle.addEventListener('input', handleAutoSave); // チーム名入力欄にリスナー設定
+    loadedTeamDesc.addEventListener('input', handleAutoSave);  // 説明入力欄にリスナー設定
 });
