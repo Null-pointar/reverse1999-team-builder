@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveStatusElement = document.getElementById('save-status');
     const teamStatsContainer = document.getElementById('team-stats-container');
     const modeSelector = document.getElementById('mode-selector');
-    const teamSlotsContainer = document.getElementById('team-slots-container');
+    //const teamSlotsContainer = document.getElementById('team-slots-container');
     const panelNavButtons = document.querySelectorAll('.panel-nav-button');
     const panelContents = document.querySelectorAll('.panel-content');
     const shareModal = document.getElementById('share-modal');
@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!didLoadFromUrl) {
                 // なければ通常の初期表示
                 renderTeamSlots();
+                updateMiniView();
             }
             createAllFilters();
             applyFilters();
@@ -315,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         slot.dataset.characterId = character.id;
         slot.setAttribute('draggable', true);
         updateTeamStats();
+        updateMiniView();
     }
     
     // スロットを空にする
@@ -324,6 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
         delete slot.dataset.characterId;
         slot.setAttribute('draggable', false);
         updateTeamStats();
+        updateMiniView();
     }
     
     // チーム統計を更新
@@ -457,6 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // チーム名と説明をUIに反映
         loadedTeamTitle.value  = teamData.name || '';
         loadedTeamDesc.value = teamData.description || '';
+
+        updateMiniView();
     }
 
     // チームを削除
@@ -610,6 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modeSelector.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
             target.classList.add('active');
             renderTeamSlots();
+            updateMiniView(); 
         }
     });
 
@@ -712,4 +718,126 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadedTeamTitle.addEventListener('input', handleAutoSave); // チーム名入力欄にリスナー設定
     loadedTeamDesc.addEventListener('input', handleAutoSave);  // 説明入力欄にリスナー設定
+
+
+    // 1. 監視対象とミニビューの要素を取得
+    const teamSection = document.querySelector('.team-section');
+    const miniTeamView = document.getElementById('mini-team-view');
+    const teamSlotsContainer = document.getElementById('team-slots-container');
+
+    // 2. ミニビューの中身を更新する関数
+    function updateMiniView() {
+        // 現在のチームスロットをコピーしてミニビューに入れる
+        miniTeamView.innerHTML = ''; // 一旦空にする
+        const clonedSlots = teamSlotsContainer.cloneNode(true);
+        miniTeamView.appendChild(clonedSlots);
+    }
+
+    // 3. チームに変化があるたびにミニビューも更新する
+    // モード変更時も更新
+    modeSelector.addEventListener('click', (event) => {
+        const target = event.target.closest('.mode-btn');
+        if (target) {
+            currentMode = target.dataset.mode;
+            modeSelector.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            target.classList.add('active');
+            renderTeamSlots();
+            updateMiniView(); // 末尾に追加
+        }
+    });
+
+
+    // 4. Intersection Observerの設定
+    const observerOptions = {
+        rootMargin: '0px',
+        threshold: 0.05 // 5%見えたらトリガー
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // team-sectionが見えている時はミニビューを隠す
+                miniTeamView.classList.add('hidden');
+            } else {
+                // 見えなくなった時にミニビューを表示する
+                miniTeamView.classList.remove('hidden');
+            }
+        });
+    }, observerOptions);
+
+    // 5. team-sectionの監視を開始
+    observer.observe(teamSection);
+
+    // ▼▼▼ ここからミニビューのドラッグ＆ドロップ機能を追加 ▼▼▼
+
+    // ミニビューの上をドラッグ中の処理
+    miniTeamView.addEventListener('dragover', (event) => {
+        event.preventDefault(); // ドロップを許可するために必須
+        miniTeamView.classList.add('drag-over');
+
+        // スロットの上にいるか判定してスタイルを当てる
+        const targetSlot = event.target.closest('.team-slot');
+        document.querySelectorAll('.mini-team-view .team-slot').forEach(slot => {
+            slot.classList.toggle('drag-over-slot', slot === targetSlot);
+        });
+    });
+
+    // ミニビューからドラッグが離れた時の処理
+    miniTeamView.addEventListener('dragleave', () => {
+        miniTeamView.classList.remove('drag-over');
+        document.querySelectorAll('.mini-team-view .team-slot').forEach(slot => {
+            slot.classList.remove('drag-over-slot');
+        });
+    });
+
+    // ミニビューにドロップされた時の処理
+    miniTeamView.addEventListener('drop', (event) => {
+        event.preventDefault();
+        miniTeamView.classList.remove('drag-over');
+        document.querySelectorAll('.mini-team-view .team-slot').forEach(slot => {
+            slot.classList.remove('drag-over-slot');
+        });
+
+        // 1. ドロップされたスロットを特定
+        const targetMiniSlot = event.target.closest('.team-slot');
+        if (!targetMiniSlot) return; // スロット以外なら何もしない
+
+        // 2. スロットの番号（インデックス）を取得
+        const slotIndex = targetMiniSlot.dataset.slotIndex;
+
+        // 3. メインのチーム編成エリアから、同じ番号の「本物」のスロットを探す
+        const originalSlot = teamSlotsContainer.querySelector(`.team-slot[data-slot-index="${slotIndex}"]`);
+        
+        // 4. ドラッグされてきたキャラクターのIDを取得
+        const characterId = event.dataTransfer.getData('text/plain');
+        const character = allCharacters.find(c => c.id == characterId);
+
+        // 5. 「本物」のスロットにキャラクターを配置
+        if (originalSlot && character) {
+            fillSlot(originalSlot, character); // 既存の関数を呼ぶだけ！
+        }
+    });
+
+    // ▼▼▼ ここからミニビューのキャラ削除機能を追加 ▼▼▼
+
+    miniTeamView.addEventListener('click', (event) => {
+        // 1. クリックされたのがキャラクタースロットか確認
+        const targetMiniSlot = event.target.closest('.team-slot');
+
+        // スロット以外、または空のスロットがクリックされた場合は何もしない
+        if (!targetMiniSlot || !targetMiniSlot.dataset.characterId) {
+            return;
+        }
+
+        // 2. スロットの番号（インデックス）を取得
+        const slotIndex = targetMiniSlot.dataset.slotIndex;
+
+        // 3. メインのチーム編成エリアから、同じ番号の「本物」のスロットを探す
+        const originalSlot = teamSlotsContainer.querySelector(`.team-slot[data-slot-index="${slotIndex}"]`);
+        
+        // 4. 「本物」のスロットを空にする（既存の関数を呼ぶだけ！）
+        if (originalSlot) {
+            clearSlot(originalSlot);
+        }
+    });
 });
